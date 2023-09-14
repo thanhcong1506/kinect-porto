@@ -8,7 +8,9 @@ import axios from "axios";
 import Link from "next/link";
 
 const getPopulargames = async () => {
-  const res = await axios.get("http://localhost:3000/api/games/newgames");
+  const res = await axios.get(
+    "https://user-api.dev.grailfarmer.app/api/v1/games/newest?limit=10&page=1"
+  );
 
   const popularGames = await res.data;
   return popularGames.rows;

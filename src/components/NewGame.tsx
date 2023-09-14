@@ -6,7 +6,9 @@ import ItemList from "./ItemList";
 import axios from "axios";
 
 const getNewgames = async () => {
-  const res = await axios.get("http://localhost:3000/api/games/newgames");
+  const res = await axios.get(
+    "https://user-api.dev.grailfarmer.app/api/v1/games/newest?limit=10&page=1"
+  );
 
   const newgames = await res.data;
   return newgames.rows;
