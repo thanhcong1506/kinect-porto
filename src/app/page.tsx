@@ -1,14 +1,19 @@
-import ResetPWSuccess from "@/components/ResetPWSuccess";
 import WelcomePage from "../components/WelcomePage";
-import HomePage from "@/components/HomePage";
-import VerifySuccess from "@/components/VerifySuccess";
-import VerifyFail from "@/components/VerifyFail";
+import Navbar from "@/components/Navbar";
+import WelcomepageNavbar from "@/components/WelcomepageNavbar";
+import { getServerSession } from "next-auth";
+import { options } from "./api/auth/[...nextauth]/options";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(options);
+  console.log(session);
+
   return (
-    <main className=" font-primary">
-      {/* <WelcomePage /> */}
-      <VerifySuccess />
-    </main>
+    <>
+      <main className=" font-primary">
+        {session ? <Navbar /> : <WelcomepageNavbar />}
+        <WelcomePage />
+      </main>
+    </>
   );
 }

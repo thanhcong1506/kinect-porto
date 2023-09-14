@@ -1,23 +1,13 @@
+"use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function WelcomePage() {
+  const router = useRouter();
   return (
     <div className=" w-full mx-auto ">
       <div className=" bg-cover w-full bg-welcome h-screen overflow-hidden relative">
-        <div className="h-[80px] bg-[rgba(0,0,0,0.3)] absolute top-0 left-0 w-full flex items-center justify-end  pe-5">
-          <div className=" flex gap-2  ">
-            <Link href={"/login"}>
-              <button className="border border-[#8E54E9] px-6 py-2 text-white rounded-xl hover:bg-[#50abff] hover:transition-shadow ">
-                Log in
-              </button>
-            </Link>
-
-            <Link href={"/signup"}>
-              <button className="main-button ">Become Member</button>
-            </Link>
-          </div>
-        </div>
         <div className="absolute  top-[50%] translate-y-[-60%] w-full flex">
           <div className="w-1/2"></div>
           <div className="  w-1/2 text-white flex flex-col gap-y-2">
@@ -33,7 +23,12 @@ export default function WelcomePage() {
               endovascular repair; aorto-bi-iliac prosthesis{" "}
             </p>
             <div className=" flex justify-end pe-5">
-              <button className=" main-button ">Learn More</button>
+              <button
+                onClick={() => router.push("/home")}
+                className=" main-button "
+              >
+                Learn More
+              </button>
             </div>
           </div>
         </div>

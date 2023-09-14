@@ -3,27 +3,31 @@ import Link from "next/link";
 import React from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 
-interface genreProps {
-  genre: genre;
+interface GameProps {
+  game: NewGames;
 }
-const ItemList = (props: genreProps) => {
-  const { genre } = props;
+const ItemList = (props: GameProps) => {
+  const { game } = props;
   return (
-    <div className="  bg-[rgba(0,0,0,0.3)] rounded-xl  overflow-hidden relative w-full h-full">
+    <div className="  bg-[rgba(0,0,0,0.3)]  relative w-full h-full">
       <Link href={""}>
-        <img className="  " src={genre.icon} alt="" />
+        <img className=" w-full h-full" src={game.image_url} alt="" />
       </Link>
       <div className=" absolute left-3 bottom-3 w-full z-20 ">
         <div className=" flex gap-1">
           <button className=" secondary-button">Action</button>
           <button className=" secondary-button">Adventure</button>
         </div>
-        <div className="flex gap-7 items-center">
-          <p>{genre.name}</p>
-          <AiOutlineHeart size={30} />
+        <div className="flex justify-between px-4 items-center">
+          <p>{game.name}</p>
+          <p className=" cursor-pointer">
+            <AiOutlineHeart size={30} />
+          </p>
         </div>
         <button className=" main-button flex gap-1 items-center">
-          <span> Download</span>
+          <Link href={game.download_url}>
+            <span> Download</span>
+          </Link>
           <span>
             <img src="/arrowDown.png" alt="" />
           </span>

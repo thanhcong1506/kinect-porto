@@ -2,23 +2,27 @@
 
 import React, { useCallback, useState, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
 import useInput from "@/hook/useInput";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { toast } from "react-toastify";
+import { getProviders, signIn, useSession } from "next-auth/react";
+import { userInfo } from "os";
 
 const Login: React.FC<{}> = (props: any) => {
   const router = useRouter();
+  const { data, status } = useSession();
+
   const [variant, setVariant] = useState("login");
+  const [isShowPassword, setIsShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const toggleVarient = useCallback(() => {
     setVariant((currentVarient) =>
       currentVarient === "login" ? "forgotPassword" : "login"
     );
   }, []);
-
-  const [isShowPassword, setIsShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const toggleshowPassword = () => {
     setIsShowPassword(!isShowPassword);
@@ -58,10 +62,26 @@ const Login: React.FC<{}> = (props: any) => {
     try {
       const res = await axios.post(
         "https://user-api.dev.grailfarmer.app/api/v1/auth/login-email",
-        { email: enteredEmail, password: enteredPassword }
+        {
+          email: enteredEmail,
+          password: enteredPassword,
+        }
       );
-
       if (res.data) {
+        const headers = { Authorization: `Bearer ${res.data.access_token}` };
+        const userInfo = await axios.get(
+          "https://user-api.dev.grailfarmer.app/api/v1/users/profile",
+          {
+            headers: headers,
+          }
+        );
+        localStorage.setItem("user", JSON.stringify(userInfo.data.email));
+        await signIn("credentials", {
+          email: enteredEmail,
+          password: enteredPassword,
+          redirect: false,
+          callbackUrl: "/home",
+        });
         router.push("/home");
         toast.success("Login successfully");
         resetEmailInput();
@@ -69,7 +89,6 @@ const Login: React.FC<{}> = (props: any) => {
       }
     } catch (err: any) {
       setError(err.response.data.message);
-
       toast.error(`${err.response.data.message}`);
     }
   };
@@ -114,6 +133,7 @@ const Login: React.FC<{}> = (props: any) => {
                     value={enteredEmail}
                     type="text"
                     id="email"
+                    name="email"
                     onInput={() => setError("")}
                   />
                   {emailInputHasError && (
@@ -141,6 +161,7 @@ const Login: React.FC<{}> = (props: any) => {
                       value={enteredPassword}
                       type={isShowPassword ? "text" : "password"}
                       id="password"
+                      name="password"
                     />
                     <div
                       onClick={toggleshowPassword}
@@ -160,6 +181,7 @@ const Login: React.FC<{}> = (props: any) => {
                   </p>
                 </div>
                 <button
+                  disabled={!enteredEmail || !enteredPassword}
                   type="submit"
                   className=" main-button w-[390px] text-2xl font-black mb-5"
                 >
@@ -195,7 +217,7 @@ const Login: React.FC<{}> = (props: any) => {
                       src="/flat-color-icons_google.png"
                       alt=""
                     />
-                    <button>GOOGLE</button>
+                    <button onClick={() => signIn("google")}>GOOGLE</button>
                   </div>
                   <div className=" flex gap-2 p-2 bg-[#143A4F] rounded-md items-center">
                     <img
@@ -203,7 +225,7 @@ const Login: React.FC<{}> = (props: any) => {
                       src="/logos_facebook.png"
                       alt=""
                     />
-                    <button>FACEBOOK</button>
+                    <button onClick={() => signIn("facebook")}>FACEBOOK</button>
                   </div>
                 </div>
               </form>

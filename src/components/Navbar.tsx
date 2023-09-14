@@ -1,10 +1,29 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BiSearch } from "react-icons/bi";
+import { useRouter } from "next/navigation";
+
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
+
+  const router = useRouter();
+  const { data: session } = useSession();
+  let user = null;
+  if (typeof window !== "undefined") {
+    user = window?.localStorage?.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") || "{}")
+      : null;
+  }
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: false }); // Chuyển hướng tùy chỉnh
+    localStorage.removeItem("user");
+    // Thực hiện chuyển hướng tới trang khác ngay sau khi đăng xuất
+    router.push("/login");
+  };
   return (
     <div
       className={
@@ -39,20 +58,24 @@ const Navbar = () => {
             />
           </form>
           <div className=" flex gap-2 items-center relative">
-            <p>Cody Fisher</p>
+            {session?.user && user && <p>{user}</p>}
+            {session?.user && <p>{session.user.email}</p>}
             <div className=" hover:flex flex-col group">
               <img
                 className=" hover:scale-125"
                 src="/navbar/down-menu.png"
                 alt=""
               />
-              <div className=" hidden group-hover:flex flex-col bg-black w-44 p-3 rounded-md absolute top-16 left-0 gap-y-2 group-hover:cursor-pointer text-xs font-medium ">
+              <div className=" hidden group-hover:flex flex-col bg-black w-44 p-3 rounded-md absolute top-16 right-0 gap-y-2 group-hover:cursor-pointer text-xs font-medium ">
                 <span className=" absolute h-12 w-full bg-transparent top-[-45px] left-0"></span>
                 <div className=" flex justify-around items-center hover:bg-[#1A2024] px-3 py-2 hover:rounded-3xl duration-300 ">
                   <img src="/navbar/icon-game.png" alt="" />
                   <p>My Games</p>
                 </div>
-                <span className=" text-center border border-white rounded-3xl px-3 py-2 hover:cursor-pointer hover:bg-white hover:text-black ease-in-out duration-300 ">
+                <span
+                  onClick={handleSignOut}
+                  className=" text-center border border-white rounded-3xl px-3 py-2 hover:cursor-pointer hover:bg-white hover:text-black ease-in-out duration-300 "
+                >
                   Log out
                 </span>
               </div>

@@ -1,12 +1,28 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ListItem from "./ListItem";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import ItemList from "./ItemList";
+import axios from "axios";
 
-const List = () => {
+const getNewgames = async () => {
+  const res = await axios.get("http://localhost:3000/api/games/newgames");
+
+  const newgames = await res.data;
+  return newgames.rows;
+};
+
+const ListNewGames = () => {
   const listRef = useRef<HTMLDivElement>(null);
 
   const [slideNumber, setSlideNumber] = useState(0);
+  const [newgames, setNewgames] = useState<NewGames[]>([]);
+
+  useEffect(() => {
+    getNewgames().then((data) => {
+      setNewgames(data);
+    });
+  }, []);
 
   const handleClick = (direction: string) => {
     let distance = listRef.current?.getBoundingClientRect().x ?? -0;
@@ -30,33 +46,17 @@ const List = () => {
   return (
     <div className="relative ">
       <div
-        className=" flex w-max  gap-x-4 transition-all ease-in-out duration-700 group"
+        className=" flex w-max  gap-x-6 transition-all ease-in-out duration-700 group"
         ref={listRef}
       >
-        <div className="w-[312px] h-[348px]">
-          <ListItem />
-        </div>
-        <div className="w-[312px] h-[348px]">
-          <ListItem />
-        </div>
-        <div className="w-[312px] h-[348px]">
-          <ListItem />
-        </div>
-        <div className="w-[312px] h-[348px]">
-          <ListItem />
-        </div>
-        <div className="w-[312px] h-[348px]">
-          <ListItem />
-        </div>
-        <div className="w-[312px] h-[348px]">
-          <ListItem />
-        </div>
-        <div className="w-[312px] h-[348px]">
-          <ListItem />
-        </div>
-        <div className="w-[312px] h-[348px]">
-          <ListItem />
-        </div>
+        {newgames.map((newgame) => (
+          <div
+            className="w-[312px] h-[348px] rounded-lg overflow-hidden"
+            key={newgame.id}
+          >
+            <ItemList game={newgame} />
+          </div>
+        ))}
       </div>
 
       <FiChevronLeft
@@ -82,4 +82,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default ListNewGames;
