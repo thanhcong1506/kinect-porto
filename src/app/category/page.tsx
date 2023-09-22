@@ -11,7 +11,7 @@ const Category = () => {
         <div className=" flex my-2">
           <p>
             <Link href={"/"}>Home </Link>
-            <span>&gt;&nbsp;</span>
+            <span>{`&gt;&nbsp;`}</span>
           </p>
           <p>Tag Category</p>
         </div>

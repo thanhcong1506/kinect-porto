@@ -19,7 +19,7 @@ const getPopulargames = async () => {
 const List = () => {
   const listRef = useRef<HTMLDivElement>(null);
 
-  const [popularGames, setPopularGames] = useState<NewGames[]>([]);
+  const [popularGames, setPopularGames] = useState<Games[]>([]);
   const [slideNumber, setSlideNumber] = useState(0);
 
   useEffect(() => {

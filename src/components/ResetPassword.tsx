@@ -9,7 +9,7 @@ export default function ResetPassword() {
         <div className="bg-[#14191D] h-full w-full relative ">
           <div className=" flex gap-3 justify-end pe-7 pt-7">
             <button className=" uppercase text-[#344148] font-extrabold text-base">
-              haven't a account
+              {`haven't a account`}
             </button>
             <Link href={"/signup"}>
               <button className=" uppercase text-white">sign up</button>

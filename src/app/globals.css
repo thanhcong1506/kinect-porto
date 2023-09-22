@@ -38,4 +38,7 @@
   .hover-icon-user {
     @apply before:content-[''] before:absolute before:w-full h-full before:block before:bg-red-600 top-[-60px];
   }
+  .bg-transparent-to-bottom {
+    @apply bg-gradient-to-b from-transparent to-[rgba(0,0,0,1)];
+  }
 }

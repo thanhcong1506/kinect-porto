@@ -93,8 +93,8 @@ const AllGames = ({
     <div className="bg-[#1a2024] text-white">
       <div className="  container mx-auto px-8 pt-[100px] pb-5">
         <div className=" flex mb-4">
-          <p className=" text-gray-200 cursor-pointer">Home &nbsp;</p>
-          <span className=" text-gray-200">&gt;&nbsp;</span>
+          <p className=" text-gray-200 cursor-pointer">{`Home &nbsp;`}</p>
+          <span className=" text-gray-200">{`&gt;&nbsp;`}</span>
           <span> All Games</span>
         </div>
         <div className=" flex justify-between ps-8 mb-2 relative">
@@ -104,38 +104,6 @@ const AllGames = ({
           </p>
         </div>
         <div className=" grid grid-cols-4 gap-4">
-          {/* <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem /> */}
           {games && games.map((game) => <p key={game}>{game} </p>)}
         </div>
         <PaginationControls

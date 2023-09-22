@@ -17,7 +17,7 @@ const config: Config = {
         login: "url('/login.png')",
         signup: "url('/signup-img.png')",
         featured: "url('/bioShock.png')",
-        detail: "url('/detailPageBg.png')",
+        detail: `linear-gradient(0, rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('/detailPageBg.png')`,
       },
     },
     fontFamily: {

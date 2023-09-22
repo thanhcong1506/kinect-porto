@@ -37,38 +37,43 @@ export const options: NextAuthOptions = {
         },
       },
       async authorize(credentials, req) {
-        // const res = await fetch("http://localhost:3000/api/auth/login", {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     email: credentials?.email,
-        //     password: credentials?.password,
-        //   }),
-        //   headers: { "Content-Type": "application/json" },
-        // });
-        // const user = await res.json();
-        // console.log(user);
-        const res = await axios.post(
-          "https://user-api.dev.grailfarmer.app/api/v1/auth/login-email",
-          {
-            email: credentials?.email,
-            password: credentials?.password,
+        const getUserData = async () => {
+          try {
+            // Gọi API login và lưu access_token
+            const res = await axios.post(
+              "https://user-api.dev.grailfarmer.app/api/v1/auth/login-email",
+              {
+                email: credentials?.email,
+                password: credentials?.password,
+              }
+            );
+            const access_token = res?.data.access_token;
+
+            // Gọi API profile để lấy email và id
+            const headers = {
+              Authorization: `Bearer ${res.data.access_token}`,
+            };
+            const resUserInfo = await axios.get(
+              "https://user-api.dev.grailfarmer.app/api/v1/users/profile",
+              {
+                headers: headers,
+              }
+            );
+
+            const { id, email, phone, ...userInfo } = resUserInfo?.data;
+
+            // Tạo đối tượng user từ access_token, email và id
+            const user = { id, email, access_token };
+            return Promise.resolve(user);
+          } catch (error) {
+            console.error(error);
+            return Promise.reject(error);
           }
-        );
-        const user = res.data;
+        };
+
+        // Sử dụng hàm getUserData để lấy đối tượng user
+        const user = await getUserData();
         console.log(user);
-        // return user;
-        // const headers = { Authorization: `Bearer ${user.access_token}` };
-
-        // const userInfo = await axios.get(
-        //   "https://user-api.dev.grailfarmer.app/api/v1/users/profile",
-        //   {
-        //     headers,
-        //   }
-        // );
-        // const userData = userInfo.data;
-
-        // If no error and we have user data, return it
-
         if (user) {
           return user;
         } else {
@@ -78,8 +83,13 @@ export const options: NextAuthOptions = {
       },
     }),
   ],
-
-  // pages: {
-  //   signIn: "/login",
-  // },
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token, user }) {
+      session.user = token as any;
+      return session;
+    },
+  },
 };

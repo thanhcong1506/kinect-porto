@@ -2,17 +2,17 @@
 
 import React, { useCallback, useState, useRef } from "react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import useInput from "@/hook/useInput";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { toast } from "react-toastify";
-import { getProviders, signIn, useSession } from "next-auth/react";
-import { userInfo } from "os";
+import { signIn, useSession } from "next-auth/react";
 
 const Login: React.FC<{}> = (props: any) => {
   const router = useRouter();
   const { data, status } = useSession();
+  // console.log(data);
 
   const [variant, setVariant] = useState("login");
   const [isShowPassword, setIsShowPassword] = useState(false);
@@ -68,14 +68,6 @@ const Login: React.FC<{}> = (props: any) => {
         }
       );
       if (res.data) {
-        const headers = { Authorization: `Bearer ${res.data.access_token}` };
-        const userInfo = await axios.get(
-          "https://user-api.dev.grailfarmer.app/api/v1/users/profile",
-          {
-            headers: headers,
-          }
-        );
-        localStorage.setItem("user", JSON.stringify(userInfo.data.email));
         await signIn("credentials", {
           email: enteredEmail,
           password: enteredPassword,
@@ -103,7 +95,7 @@ const Login: React.FC<{}> = (props: any) => {
           <div className="bg-[#14191D] h-full w-full relative ">
             <div className=" flex gap-3 justify-end pe-7 pt-7">
               <p className=" uppercase text-[#344148] font-extrabold text-base">
-                haven't a account
+                {`haven't a account`}
               </p>
               <Link href={"/signup"}>
                 <button className=" uppercase text-white">sign up</button>

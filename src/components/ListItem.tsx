@@ -1,46 +1,102 @@
 "use client";
-import { useState } from "react";
-
+import axios from "axios";
 import Link from "next/link";
-import React from "react";
-import DetailViewScreenshot from "./DetailViewScreenshot";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { mutate } from "swr";
 
-const ListItem = () => {
-  const [showModal, setShowModal] = useState(false);
+interface GameProps {
+  game: Games;
+  game_id: number;
+  token: string | undefined;
+}
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+const ListItem = (props: GameProps) => {
+  const { game, game_id, token } = props;
+  const router = useRouter();
+  const [gameFavorite, setGameFavorite] = useState<Games[]>([]);
+
+  useEffect(() => {
+    const getGameFavorite = async () => {
+      const res = await axios.get(
+        "https://user-api.dev.grailfarmer.app/api/v1/games?limit=20&page=1",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!res.data) throw new Error("something went wrong");
+      // console.log("vv", res.data.rows);
+      setGameFavorite(res.data.rows);
+    };
+    getGameFavorite();
+  }, []);
+
+  const handleClick = (id: number) => {
+    router.push(`/detail/${id}`);
+  };
+
+  const toggleFavorite = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const data = { game_id: game_id };
+    const headers = { Authorization: `Bearer ${token}` };
+    let isRefresh;
+
+    const res = await axios.post(
+      "https://user-api.dev.grailfarmer.app/api/v1/games/love",
+      data,
+      { headers: headers }
+    );
+    if (isRefresh) {
+      router.refresh();
+    }
   };
 
   return (
-    <div className="  bg-black rounded-xl  overflow-hidden relative w-full h-full">
+    <div className="  bg-[rgba(0,0,0,0.3)]  relative w-full h-full">
+      <div
+        onClick={() => handleClick(game.id)}
+        className=" w-full h-full bg-transparent-to-bottom absolute top-0 left-0 cursor-pointer"
+      ></div>
       <img
-        onClick={() => setShowModal(true)}
-        className=" cursor-pointer ease-in-out duration-300 overflow-hidden hover:scale-125 "
-        src="/Property 1=Red Dead II_ Redemption.png"
+        className=" w-full h-full cursor-pointer bg-transparenTotop "
+        src={game.image_url}
         alt=""
       />
 
-      <div className=" absolute left-3 bottom-3 w-full">
+      <div className=" absolute left-3 bottom-3 w-full z-20 space-y-2 ">
         <div className=" flex gap-1">
-          <button className=" secondary-button">Action</button>
-          <button className=" secondary-button">Adventure</button>
+          {game.genres &&
+            game.genres.map((genre) => (
+              <button key={genre.id} className=" secondary-button !text-xs">
+                {genre.name}
+              </button>
+            ))}
         </div>
-        <div className="flex gap-7">
-          <p>Red Dead II: Redemption</p>
-          <img src="/heart.png" alt="" />
+        <div className="flex justify-between pe-12  items-center">
+          <p className=" font-extrabold text-lg">{game.name}</p>
+          <p onClick={toggleFavorite} className=" cursor-pointer relative ">
+            <AiOutlineHeart
+              className=" fill-white absolute -top-[2px] -right-[2px]"
+              size={28}
+            />
+            <AiFillHeart
+              className={
+                game.isLoved ? "fill-rose-500" : " fill-neutral-500/70"
+              }
+              size={24}
+            />
+          </p>
         </div>
         <button className=" main-button flex gap-1 items-center">
-          <span> Download</span>
+          <Link href={game.download_url}>
+            <span> Download</span>
+          </Link>
           <span>
             <img src="/arrowDown.png" alt="" />
           </span>
         </button>
       </div>
-      <DetailViewScreenshot
-        openModal={showModal}
-        setShowModal={handleCloseModal}
-      />
     </div>
   );
 };

@@ -1,30 +1,83 @@
-import React from "react";
+"use client";
+import ImageModal from "@/components/ImageModal";
+import ScreenShotModal from "@/components/ScreenshotModal";
+import axios from "axios";
+import React, { useState } from "react";
 import { AiOutlineLeftCircle, AiOutlineRightCircle } from "react-icons/ai";
-const Detail = () => {
+import useSWR, { Fetcher } from "swr";
+
+const fetcher: Fetcher<GameDetail, string> = (url: string) =>
+  fetch(url).then((res) => res.json());
+
+const Detail = ({ params }: { params: { id: number } }) => {
+  const { data, error, isLoading } = useSWR(
+    `https://user-api.dev.grailfarmer.app/api/v1/games/detail/${params.id}`,
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  const [currentImage, setCurrentImage] = useState<string | undefined>(
+    undefined
+  );
+
+  const openModal = (image: string) => {
+    setCurrentImage(image);
+  };
+
+  const closeModal = () => {
+    setCurrentImage("");
+  };
+
+  const handleNextImage = () => {
+    const dataImage = data?.game_screenshots;
+    console.log(dataImage);
+    let currentIndex;
+    // if(dataImage{
+
+    //    currentIndex = dataImage?.indexOf(currentImage);
+    // })
+    // if (currentIndex < dataImage?.length - 1) {
+    //   setCurrentImage(data?.game_screenshots?[currentIndex + 1]);
+    // }
+  };
+
+  const handlePrevImage = () => {
+    // const currentIndex = data?.game_screenshots.indexOf(currentImage);
+    // if (currentIndex > 0) {
+    //   setCurrentImage(data?.game_screenshots?[currentIndex - 1]);
+    // }
+  };
+
   return (
-    <div className="bg-detail bg-cover overflow-hidden w-full min-h-screen text-white">
-      <div className=" container mx-auto px-10 pt-24">
+    <div className=" bg-detail bg-cover overflow-hidden w-full min-h-screen text-white">
+      <div className=" container mx-auto max-w-[1300px] pt-24">
         <div className="flex">
-          <span>Home &gt;&nbsp; </span>
-          <span> Bioshock Infinite</span>
+          <span>{`Home {&gt;&nbsp;} `}</span>
+          <span> {data?.name}</span>
         </div>
-        <div className="w-full">
-          <img className=" w-full" src="/bioShock.png" alt="" />
+        <div className="w-full h-[400px] rounded-xl object-contain overflow-hidden">
+          <img className=" w-full h-full" src={data?.image_url} alt="" />
         </div>
 
         <div className=" flex flex-col space-y-4 py-5">
           <div className=" flex justify-between items-center">
             <div className=" flex flex-col gap-2">
               <div className="flex gap-10 items-center">
-                <h1 className=" text-5xl">BIOSHOCK INFINITE</h1>
+                <h1 className=" text-5xl">{data?.name}</h1>
                 <span>
                   <img className=" w-9" src="/heart.png" alt="" />
                 </span>
               </div>
               <div className=" flex gap-1">
-                <button className=" secondary-button">Action</button>
-                <button className=" secondary-button">Adventure</button>
-                <button className=" secondary-button">Art</button>
+                {data?.genres.map((genre) => (
+                  <button key={genre.id} className=" secondary-button">
+                    {genre.name}
+                  </button>
+                ))}
               </div>
             </div>
             <div className=" flex flex-col pe-10">
@@ -43,15 +96,7 @@ const Detail = () => {
           </div>
 
           <div className=" flex flex-col gap-3">
-            <p className=" w-2/3">
-              Columbia, the city "in the clouds", the symbol of America's
-              prosperity, is gone. Players take on the role of former Pinkerton
-              agent Booker DeWitt, sent to this city to rescue Elizabeth, a
-              young woman who has been imprisoned here since childhood. DeWitt
-              must learn to battle enemies in high-speed Sky-Line battles,
-              engaging in combat both indoors and in the clouds, with dozens of
-              new weapons and abilities.
-            </p>
+            <p className=" w-2/3">{data?.description}</p>
             <button className=" secondary-button flex items-center gap-1 w-max">
               <span className=" text-[#50ABFF]">Read More</span>
               <span>
@@ -74,37 +119,26 @@ const Detail = () => {
               />
             </div>
           </div>
-          <div className="flex gap-3 w-max ">
-            <img
-              className="w-[244px] h-[272px] rounded-lg  hover:cursor-pointer hover:scale-110 duration-300  "
-              src="/Property1=GodofWar.png"
-              alt=""
-            />
-            <img
-              className="w-[244px] h-[272px] rounded-lg hover:cursor-pointer hover:scale-110 duration-300 "
-              src="/Property1=GodofWar.png"
-              alt=""
-            />
-            <img
-              className="w-[244px] h-[272px] rounded-lg hover:cursor-pointer hover:scale-110 duration-300"
-              src="/Property1=GodofWar.png"
-              alt=""
-            />
-            <img
-              className="w-[244px] h-[272px] rounded-lg hover:cursor-pointer hover:scale-110 duration-300"
-              src="/Property1=GodofWar.png"
-              alt=""
-            />
-            <img
-              className="w-[244px] h-[272px] rounded-lg hover:cursor-pointer hover:scale-110 duration-300"
-              src="/Property1=GodofWar.png"
-              alt=""
-            />
-            <img
-              className="w-[244px] h-[272px] rounded-lg hover:cursor-pointer hover:scale-110 duration-300"
-              src="/Property1=GodofWar.png"
-              alt=""
-            />
+          <div className="grid grid-cols-5 gap-4 w-full ">
+            {data?.game_screenshots &&
+              data.game_screenshots.map((shot, index) => (
+                <img
+                  onClick={() => openModal(shot)}
+                  className="  h-[250px] bg-cover overflow-hidden rounded-xl cursor-pointer hover:scale-110 ease-in-out duration-300"
+                  src={shot}
+                  key={index}
+                  alt="Screen shot"
+                />
+              ))}
+
+            {currentImage && (
+              <ImageModal
+                image={currentImage}
+                onCloseModal={closeModal}
+                onNextImage={handleNextImage}
+                onPrevImage={handlePrevImage}
+              />
+            )}
           </div>
         </div>
       </div>

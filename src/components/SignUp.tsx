@@ -32,9 +32,11 @@ const Signup: React.FC<{}> = (props: any) => {
     valueChangeHandler: passwordChangeHandler,
     inputBlurHandler: passwordBlueHandler,
     reset: resetPasswordInput,
-  } = useInput(
-    (value: string) => value.trim().length > 6 && value.trim().length < 15
-  );
+  } = useInput((value: string) => {
+    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{5,20}$/;
+    // min 5 characters max 20 characters, 1 upper case letter, 1 lower case letter, 1 numeric digit.;
+    return value.trim() !== "" && regex.test(value);
+  });
 
   let formIsValid: boolean = false;
 
@@ -138,7 +140,8 @@ const Signup: React.FC<{}> = (props: any) => {
                     </div>
                     {passwordInputHasError && (
                       <p className="text-red-600">
-                        Password must have at least 6 character, at max 15
+                        Password must have at least 5 character, at least one
+                        capital letter, one speccial character and one digit
                         character!!!
                       </p>
                     )}

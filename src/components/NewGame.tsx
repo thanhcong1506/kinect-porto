@@ -2,44 +2,68 @@
 import React, { useEffect, useRef, useState } from "react";
 import ListItem from "./ListItem";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import ItemList from "./ItemList";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+import useSWR from "swr";
 
-const getNewgames = async () => {
-  const res = await axios.get(
-    "https://user-api.dev.grailfarmer.app/api/v1/games/newest?limit=10&page=1"
-  );
-
-  const newgames = await res.data;
-  return newgames.rows;
-};
+// const fetcher = async (url: string, headers: any) => {
+//   try {
+//     const response = await axios.get(url, { headers });
+//     return response.data;
+//   } catch (error: any) {
+//     // Handle error
+//     throw new Error(error.response.data.message);
+//   }
+// };
 
 const ListNewGames = () => {
+  const session = useSession();
+  const token = session.data?.user.access_token;
+  const [newGames, setNewGames] = useState<Games[]>([]);
+
+  // if (!token) return;
+  // const { data, error } = useSWR(
+  //   "https://user-api.dev.grailfarmer.app/api/v1/games?limit=20&page=1",
+  //   (url) => fetcher(url, { Authorization: `Bearer ${token}` })
+  // );
+  // console.log(data);
+  useEffect(() => {
+    if (token) {
+      const getNewGames = async () => {
+        const res = await axios.get(
+          "https://user-api.dev.grailfarmer.app/api/v1/games?limit=20&page=1",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!res.data) throw new Error("something went wrong");
+        // console.log("newgame", res.data.rows);
+        setNewGames(res.data.rows);
+      };
+      getNewGames();
+    }
+  }, [token]);
+
   const listRef = useRef<HTMLDivElement>(null);
 
   const [slideNumber, setSlideNumber] = useState(0);
-  const [newgames, setNewgames] = useState<NewGames[]>([]);
-
-  useEffect(() => {
-    getNewgames().then((data) => {
-      setNewgames(data);
-    });
-  }, []);
 
   const handleClick = (direction: string) => {
-    let distance = listRef.current?.getBoundingClientRect().x ?? -0;
+    let distance: number = listRef.current?.getBoundingClientRect().x ?? -96;
+    console.log(distance);
     if (direction === "left" && slideNumber > 0) {
       setSlideNumber(slideNumber - 1);
       listRef.current?.setAttribute(
         "style",
-        `transform:translateX(${328 + distance - 40}px)`
+        `transform:translateX(${336 + distance}px)`
       );
     }
     if (direction === "right" && slideNumber < 4) {
       setSlideNumber(slideNumber + 1);
       listRef.current?.setAttribute(
         "style",
-        `transform:translateX(${-328 + distance - 40}px)`
+        `transform:translateX(${-336 + distance}px)`
       );
     }
     console.log(distance);
@@ -51,12 +75,12 @@ const ListNewGames = () => {
         className=" flex w-max  gap-x-6 transition-all ease-in-out duration-700 group"
         ref={listRef}
       >
-        {newgames.map((newgame) => (
+        {newGames.map((newgame: Games) => (
           <div
             className="w-[312px] h-[348px] rounded-lg overflow-hidden"
             key={newgame.id}
           >
-            <ItemList game={newgame} />
+            <ListItem game={newgame} game_id={newgame.id} token={token} />
           </div>
         ))}
       </div>

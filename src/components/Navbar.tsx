@@ -5,23 +5,17 @@ import { BiSearch } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 
 import { signOut, useSession } from "next-auth/react";
+import Search from "./Search/Search";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   const router = useRouter();
   const { data: session } = useSession();
-  let user = null;
-  if (typeof window !== "undefined") {
-    user = window?.localStorage?.getItem("user")
-      ? JSON.parse(localStorage.getItem("user") || "{}")
-      : null;
-  }
 
   const handleSignOut = async () => {
     await signOut({ redirect: false }); // Chuyển hướng tùy chỉnh
-    localStorage.removeItem("user");
-    // Thực hiện chuyển hướng tới trang khác ngay sau khi đăng xuất
+
     router.push("/login");
   };
   return (
@@ -32,7 +26,7 @@ const Navbar = () => {
           : " font-primary w-full  bg-[rgba(0,0,0,0.2)] text-white fixed top-0 z-10 shadow-gray-50 "
       }
     >
-      <div className=" container mx-auto px-8 flex justify-between items-center h-20">
+      <div className=" container mx-auto px-3 flex justify-between items-center h-20 max-w-[1440px]">
         <div className=" flex gap-5">
           <img
             onClick={() => setShowMenu(!showMenu)}
@@ -40,25 +34,14 @@ const Navbar = () => {
             src="/navbar/mobile-menu.png "
             alt=""
           />
-          <Link href={"/"}>
+          <Link href={"/home"}>
             <img className=" cursor-pointer" src="/banner-icon.png" alt="" />
           </Link>
         </div>
         <div className="flex justify-end items-center gap-7">
-          <form className=" relative ">
-            <input
-              type="search"
-              className=" cursor-pointer relative z-10 h-8 w-8 rounded-full   bg-transparent pr-0 outline-none focus:w-80 focus:border focus:cursor-text focus:border-white focus:pl-4 focus:pr-8"
-              name=""
-              id=""
-            />
-            <BiSearch
-              className="absolute inset-y-0 my-auto right-2"
-              size={25}
-            />
-          </form>
+          <Search />
+
           <div className=" flex gap-2 items-center relative">
-            {session?.user && user && <p>{user}</p>}
             {session?.user && <p>{session.user.email}</p>}
             <div className=" hover:flex flex-col group">
               <img
