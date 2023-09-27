@@ -8,12 +8,13 @@ import useInput from "@/hook/useInput";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { toast } from "react-toastify";
 import { signIn, useSession } from "next-auth/react";
+import { useAppDispatch } from "@/redux/hook";
 
 const Login: React.FC<{}> = (props: any) => {
   const router = useRouter();
   const { data, status } = useSession();
   // console.log(data);
-
+  const dispatch = useAppDispatch();
   const [variant, setVariant] = useState("login");
   const [isShowPassword, setIsShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -74,13 +75,14 @@ const Login: React.FC<{}> = (props: any) => {
           redirect: false,
           callbackUrl: "/home",
         });
+
         router.push("/home");
         toast.success("Login successfully");
         resetEmailInput();
         resetPasswordInput();
       }
     } catch (err: any) {
-      setError(err.response.data.message);
+      setError(err.response.data?.message);
       toast.error(`${err.response.data.message}`);
     }
   };

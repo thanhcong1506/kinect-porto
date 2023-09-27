@@ -2,49 +2,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import ListItem from "./ListItem";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import axios from "axios";
-import { useSession } from "next-auth/react";
-import useSWR from "swr";
-
-// const fetcher = async (url: string, headers: any) => {
-//   try {
-//     const response = await axios.get(url, { headers });
-//     return response.data;
-//   } catch (error: any) {
-//     // Handle error
-//     throw new Error(error.response.data.message);
-//   }
-// };
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import {
+  fetchLovedGamesAsync,
+  fetchNewGamesAsync,
+  selectLovedGames,
+  selectNewGames,
+} from "@/redux/gameSlice";
+import { toggleFavorite } from "@/redux/loveGameSlice";
 
 const ListNewGames = () => {
-  const session = useSession();
-  const token = session.data?.user.access_token;
-  const [newGames, setNewGames] = useState<Games[]>([]);
+  const dispatch = useAppDispatch();
+  const newGames = useAppSelector(selectNewGames);
+  const newgamess = useAppSelector((state) => state.games);
+  console.log(newgamess);
 
-  // if (!token) return;
-  // const { data, error } = useSWR(
-  //   "https://user-api.dev.grailfarmer.app/api/v1/games?limit=20&page=1",
-  //   (url) => fetcher(url, { Authorization: `Bearer ${token}` })
-  // );
-  // console.log(data);
+  // console.log("newww", newGames);
   useEffect(() => {
-    if (token) {
-      const getNewGames = async () => {
-        const res = await axios.get(
-          "https://user-api.dev.grailfarmer.app/api/v1/games?limit=20&page=1",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (!res.data) throw new Error("something went wrong");
-        // console.log("newgame", res.data.rows);
-        setNewGames(res.data.rows);
-      };
-      getNewGames();
-    }
-  }, [token]);
-
+    dispatch(fetchNewGamesAsync());
+  }, [dispatch]);
   const listRef = useRef<HTMLDivElement>(null);
 
   const [slideNumber, setSlideNumber] = useState(0);
@@ -66,7 +42,13 @@ const ListNewGames = () => {
         `transform:translateX(${-336 + distance}px)`
       );
     }
-    console.log(distance);
+  };
+  const handleToggleFavorite = (
+    gameId: number,
+    isFavorite: boolean | undefined
+  ) => {
+    dispatch(toggleFavorite(gameId));
+    dispatch(fetchLovedGamesAsync());
   };
 
   return (
@@ -75,12 +57,16 @@ const ListNewGames = () => {
         className=" flex w-max  gap-x-6 transition-all ease-in-out duration-700 group"
         ref={listRef}
       >
-        {newGames.map((newgame: Games) => (
+        {newGames?.map((newgame: Games) => (
           <div
             className="w-[312px] h-[348px] rounded-lg overflow-hidden"
             key={newgame.id}
           >
-            <ListItem game={newgame} game_id={newgame.id} token={token} />
+            <ListItem
+              game={newgame}
+              onToggleFavorite={handleToggleFavorite}
+              key={newgame.id}
+            />
           </div>
         ))}
       </div>

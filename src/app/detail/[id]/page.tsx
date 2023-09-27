@@ -3,7 +3,12 @@ import ImageModal from "@/components/ImageModal";
 import ScreenShotModal from "@/components/ScreenshotModal";
 import axios from "axios";
 import React, { useState } from "react";
-import { AiOutlineLeftCircle, AiOutlineRightCircle } from "react-icons/ai";
+import {
+  AiFillHeart,
+  AiOutlineHeart,
+  AiOutlineLeftCircle,
+  AiOutlineRightCircle,
+} from "react-icons/ai";
 import useSWR, { Fetcher } from "swr";
 
 const fetcher: Fetcher<GameDetail, string> = (url: string) =>
@@ -19,7 +24,7 @@ const Detail = ({ params }: { params: { id: number } }) => {
       revalidateOnReconnect: false,
     }
   );
-
+  console.log(data);
   const [currentImage, setCurrentImage] = useState<string | undefined>(
     undefined
   );
@@ -68,8 +73,17 @@ const Detail = ({ params }: { params: { id: number } }) => {
             <div className=" flex flex-col gap-2">
               <div className="flex gap-10 items-center">
                 <h1 className=" text-5xl">{data?.name}</h1>
-                <span>
-                  <img className=" w-9" src="/heart.png" alt="" />
+                <span className=" relative">
+                  <AiOutlineHeart
+                    className=" fill-white absolute -top-[2px] -right-[2px]"
+                    size={28}
+                  />
+                  <AiFillHeart
+                    className={
+                      data?.isLoved ? "fill-rose-500" : " fill-neutral-500/70"
+                    }
+                    size={24}
+                  />
                 </span>
               </div>
               <div className=" flex gap-1">

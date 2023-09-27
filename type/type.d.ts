@@ -40,8 +40,11 @@ interface Game {
   id: number;
   name: string;
 }
+interface GameFavorite {
+  myGame: Game[];
+}
 
 interface ActionTypes {
-  addToCart: (item: Game) => void;
-  removeFromCart: (item: Game) => void;
+  addToCartFavorite: (item: Game) => void;
+  removeFromCartFavorite: (item: Game) => void;
 }

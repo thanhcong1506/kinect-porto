@@ -12,7 +12,6 @@ const Navbar = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
-
   const handleSignOut = async () => {
     await signOut({ redirect: false }); // Chuyển hướng tùy chỉnh
 

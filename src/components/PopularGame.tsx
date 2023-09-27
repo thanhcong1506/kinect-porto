@@ -2,31 +2,25 @@
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import DownloadButton from "./DownloadButton";
-import axios from "axios";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { fetchPopularGamesAsync } from "@/redux/gameSlice";
+import { selectFavorites, toggleFavorite } from "@/redux/loveGameSlice";
 
-const getPopulargames = async () => {
-  const res = await axios.get(
-    "https://user-api.dev.grailfarmer.app/api/v1/games/newest?limit=10&page=1"
-  );
+const PopularGame = () => {
+  const favorites = useAppSelector(selectFavorites);
+  const dispatch = useAppDispatch();
+  const popularGames = useAppSelector((state) => state.games.popularGames);
+  // console.log("popular", popularGames);
+  useEffect(() => {
+    dispatch(fetchPopularGamesAsync());
+  }, [dispatch]);
 
-  const popularGames = await res.data;
-  return popularGames.rows;
-};
-
-const List = () => {
   const listRef = useRef<HTMLDivElement>(null);
 
-  const [popularGames, setPopularGames] = useState<Games[]>([]);
   const [slideNumber, setSlideNumber] = useState(0);
-
-  useEffect(() => {
-    getPopulargames().then((data) => {
-      setPopularGames(data);
-    });
-  }, []);
 
   const handleClick = (direction: string) => {
     let distance = listRef.current?.getBoundingClientRect().x ?? -0;
@@ -44,9 +38,11 @@ const List = () => {
         `transform:translateX(${-328 + distance - 40}px)`
       );
     }
-    console.log(distance);
   };
 
+  const handleToggleFavorite = (gameId: number) => {
+    dispatch(toggleFavorite(gameId));
+  };
   return (
     <div className="relative">
       <div
@@ -76,8 +72,22 @@ const List = () => {
                     <h1 className=" text-2xl font-semibold me-3">
                       {popularGame.name}
                     </h1>
-                    <span>
-                      <AiOutlineHeart size={24} />
+                    <span
+                      onClick={() => handleToggleFavorite(popularGame.id)}
+                      className="relative"
+                    >
+                      <AiOutlineHeart
+                        className=" fill-white absolute -top-[2px] -right-[2px]"
+                        size={28}
+                      />
+                      <AiFillHeart
+                        className={
+                          popularGame.isLoved
+                            ? "fill-rose-500"
+                            : " fill-neutral-500/70"
+                        }
+                        size={24}
+                      />
                     </span>
                   </div>
                   <p className="text-xs w-full  line-clamp-4">
@@ -116,4 +126,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default PopularGame;

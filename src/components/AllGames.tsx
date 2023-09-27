@@ -1,34 +1,30 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import ItemList from "./ListItem";
-import axios from "axios";
+import React, { useEffect, useRef } from "react";
+
 import ListItem from "./ListItem";
-import { useSession } from "next-auth/react";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { fetchGamesAsync, selectAllGames } from "@/redux/gameSlice";
 
-const getAllgames = async () => {
-  const res = await axios.get(
-    "https://user-api.dev.grailfarmer.app/api/v1/games?limit=10&page=1"
-  );
-
-  const games = await res.data;
-  return games.rows;
-};
+interface AllGamesProp {
+  games: Games[];
+  onToggleFavorite: (gameId: number) => void;
+}
 
 const AllGames = () => {
-  const listRef = useRef<HTMLDivElement>(null);
+  // const { games, onToggleFavorite } = props;
 
-  const [games, setGames] = useState<Games[]>([]);
-  const session = useSession();
-  const token = session.data?.user.access_token;
+  const dispatch = useAppDispatch();
+  const games = useAppSelector(selectAllGames);
+
+  // console.log("games", games);
 
   useEffect(() => {
-    if (token) {
-      getAllgames().then((data) => {
-        setGames(data);
-      });
-    }
-  }, [token]);
+    dispatch(fetchGamesAsync());
+  }, [dispatch]);
 
+  const listRef = useRef<HTMLDivElement>(null);
+
+  const onToggleFavorite = () => {};
   return (
     <div className="relative ">
       <div
@@ -40,7 +36,11 @@ const AllGames = () => {
             className="w-[312px] h-[348px] rounded-lg overflow-hidden"
             key={game.id}
           >
-            <ListItem game={game} game_id={game.id} token={token} />
+            <ListItem
+              game={game}
+              key={game.id}
+              onToggleFavorite={onToggleFavorite}
+            />
           </div>
         ))}
       </div>

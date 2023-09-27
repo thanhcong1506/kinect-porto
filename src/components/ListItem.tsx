@@ -2,54 +2,20 @@
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { mutate } from "swr";
 
 interface GameProps {
   game: Games;
-  game_id: number;
-  token: string | undefined;
+  onToggleFavorite: (gameId: number, isFavorites: boolean | undefined) => void;
 }
 
 const ListItem = (props: GameProps) => {
-  const { game, game_id, token } = props;
+  const { game, onToggleFavorite } = props;
   const router = useRouter();
-  const [gameFavorite, setGameFavorite] = useState<Games[]>([]);
-
-  useEffect(() => {
-    const getGameFavorite = async () => {
-      const res = await axios.get(
-        "https://user-api.dev.grailfarmer.app/api/v1/games?limit=20&page=1",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!res.data) throw new Error("something went wrong");
-      // console.log("vv", res.data.rows);
-      setGameFavorite(res.data.rows);
-    };
-    getGameFavorite();
-  }, []);
 
   const handleClick = (id: number) => {
     router.push(`/detail/${id}`);
-  };
-
-  const toggleFavorite = async (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    const data = { game_id: game_id };
-    const headers = { Authorization: `Bearer ${token}` };
-    let isRefresh;
-
-    const res = await axios.post(
-      "https://user-api.dev.grailfarmer.app/api/v1/games/love",
-      data,
-      { headers: headers }
-    );
-    if (isRefresh) {
-      router.refresh();
-    }
   };
 
   return (
@@ -75,7 +41,10 @@ const ListItem = (props: GameProps) => {
         </div>
         <div className="flex justify-between pe-12  items-center">
           <p className=" font-extrabold text-lg">{game.name}</p>
-          <p onClick={toggleFavorite} className=" cursor-pointer relative ">
+          <p
+            className=" cursor-pointer relative "
+            onClick={() => onToggleFavorite(game.id, game.isLoved)}
+          >
             <AiOutlineHeart
               className=" fill-white absolute -top-[2px] -right-[2px]"
               size={28}
