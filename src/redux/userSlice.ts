@@ -6,14 +6,13 @@ interface LoginPayload {
   password: string;
 }
 
-interface InitialState {
-  value: UserState;
-}
-
 interface UserState {
   currentUser: string | null;
   loading: boolean;
   error: boolean;
+}
+interface InitialState {
+  value: UserState;
 }
 
 const initialState = {

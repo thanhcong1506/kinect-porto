@@ -73,7 +73,6 @@ export const options: NextAuthOptions = {
 
         // Sử dụng hàm getUserData để lấy đối tượng user
         const user = await getUserData();
-        console.log(user);
         if (user) {
           return user;
         } else {
@@ -83,13 +82,25 @@ export const options: NextAuthOptions = {
       },
     }),
   ],
+
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       return { ...token, ...user };
     },
     async session({ session, token, user }) {
       session.user = token as any;
       return session;
     },
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log("account", account);
+      console.log("user", user);
+      console.log("credentials", credentials);
+      console.log("profile", profile);
+      return true;
+    },
+  },
+
+  session: {
+    strategy: "jwt",
   },
 };

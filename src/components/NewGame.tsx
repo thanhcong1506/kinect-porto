@@ -1,21 +1,24 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ListItem from "./ListItem";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import {
-  fetchLovedGamesAsync,
-  fetchNewGamesAsync,
-  selectLovedGames,
-  selectNewGames,
-} from "@/redux/gameSlice";
-import { toggleFavorite } from "@/redux/loveGameSlice";
+import { fetchLovedGamesAsync, fetchNewGamesAsync } from "@/redux/gameSlice";
+import { toggleLovedGame } from "@/redux/gameLovedSlice";
+import { toast } from "react-toastify";
+import Skeleton from "@/utils/Skeleton";
+import { useRouter } from "next/navigation";
 
-const ListNewGames = () => {
+interface NewsGameProps {
+  onToggleLoveGame: (gameId: number) => void;
+}
+const ListNewGames = (props: NewsGameProps) => {
+  const { onToggleLoveGame } = props;
   const dispatch = useAppDispatch();
-  const newGames = useAppSelector(selectNewGames);
-  const newgamess = useAppSelector((state) => state.games);
-  console.log(newgamess);
+
+  const { status, newGames } = useAppSelector((state) => state.games);
+  const { lovedGames } = useAppSelector((state) => state.lovedGame);
+  const router = useRouter();
 
   // console.log("newww", newGames);
   useEffect(() => {
@@ -43,13 +46,6 @@ const ListNewGames = () => {
       );
     }
   };
-  const handleToggleFavorite = (
-    gameId: number,
-    isFavorite: boolean | undefined
-  ) => {
-    dispatch(toggleFavorite(gameId));
-    dispatch(fetchLovedGamesAsync());
-  };
 
   return (
     <div className="relative ">
@@ -57,6 +53,10 @@ const ListNewGames = () => {
         className=" flex w-max  gap-x-6 transition-all ease-in-out duration-700 group"
         ref={listRef}
       >
+        {/* {status === "loading" ? (
+          <p>Loading...</p>
+        ) : (
+          <> */}
         {newGames?.map((newgame: Games) => (
           <div
             className="w-[312px] h-[348px] rounded-lg overflow-hidden"
@@ -64,13 +64,14 @@ const ListNewGames = () => {
           >
             <ListItem
               game={newgame}
-              onToggleFavorite={handleToggleFavorite}
+              onToggleLoveGame={onToggleLoveGame}
               key={newgame.id}
             />
           </div>
         ))}
+        {/* </>
+        )} */}
       </div>
-
       <FiChevronLeft
         onClick={() => handleClick("left")}
         className={
@@ -80,7 +81,6 @@ const ListNewGames = () => {
         }
         size={30}
       />
-
       <FiChevronRight
         onClick={() => handleClick("right")}
         className={

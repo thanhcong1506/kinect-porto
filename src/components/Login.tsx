@@ -55,35 +55,55 @@ const Login: React.FC<{}> = (props: any) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!formIsValid) {
       return;
     }
 
+    if (variant === "login") {
+      try {
+        const res = await axios.post(
+          "https://user-api.dev.grailfarmer.app/api/v1/auth/login-email",
+          {
+            email: enteredEmail,
+            password: enteredPassword,
+          }
+        );
+        if (res.data) {
+          await signIn("credentials", {
+            email: enteredEmail,
+            password: enteredPassword,
+            redirect: false,
+            callbackUrl: "/home",
+          });
+
+          router.push("/home");
+          toast.success("Login successfully");
+          resetEmailInput();
+          resetPasswordInput();
+        }
+      } catch (err: any) {
+        setError(err.response.data?.message);
+        toast.error(`${err.response.data.message}`);
+      }
+    } else {
+      console.log("clicked");
+    }
+  };
+
+  const handleForgotPassword = async () => {
     try {
-      const res = await axios.post(
-        "https://user-api.dev.grailfarmer.app/api/v1/auth/login-email",
+      const { data } = await axios.post(
+        "https://user-api.dev.grailfarmer.app/api/v1/auth/forgot-password",
         {
           email: enteredEmail,
-          password: enteredPassword,
         }
       );
-      if (res.data) {
-        await signIn("credentials", {
-          email: enteredEmail,
-          password: enteredPassword,
-          redirect: false,
-          callbackUrl: "/home",
-        });
-
-        router.push("/home");
-        toast.success("Login successfully");
-        resetEmailInput();
-        resetPasswordInput();
+      if (data === true) {
+        toast.success("Please check email ");
       }
-    } catch (err: any) {
-      setError(err.response.data?.message);
-      toast.error(`${err.response.data.message}`);
+    } catch (error) {
+      console.error(error);
+      toast.error("You are not a member of KinectPortal yet, Register now!!!");
     }
   };
 
@@ -175,7 +195,9 @@ const Login: React.FC<{}> = (props: any) => {
                   </p>
                 </div>
                 <button
-                  disabled={!enteredEmail || !enteredPassword}
+                  onClick={
+                    variant === "login" ? handleSubmit : handleForgotPassword
+                  }
                   type="submit"
                   className=" main-button w-[390px] text-2xl font-black mb-5"
                 >

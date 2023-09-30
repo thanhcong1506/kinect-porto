@@ -7,13 +7,17 @@ import DownloadButton from "./DownloadButton";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { fetchPopularGamesAsync } from "@/redux/gameSlice";
-import { selectFavorites, toggleFavorite } from "@/redux/loveGameSlice";
 
-const PopularGame = () => {
-  const favorites = useAppSelector(selectFavorites);
+interface PopularGameProps {
+  onToggleLoveGame: (gameId: number) => void;
+}
+
+const PopularGame = (props: PopularGameProps) => {
+  const { onToggleLoveGame } = props;
+
   const dispatch = useAppDispatch();
-  const popularGames = useAppSelector((state) => state.games.popularGames);
-  // console.log("popular", popularGames);
+  const { popularGames } = useAppSelector((state) => state.games);
+
   useEffect(() => {
     dispatch(fetchPopularGamesAsync());
   }, [dispatch]);
@@ -40,9 +44,6 @@ const PopularGame = () => {
     }
   };
 
-  const handleToggleFavorite = (gameId: number) => {
-    dispatch(toggleFavorite(gameId));
-  };
   return (
     <div className="relative">
       <div
@@ -73,8 +74,8 @@ const PopularGame = () => {
                       {popularGame.name}
                     </h1>
                     <span
-                      onClick={() => handleToggleFavorite(popularGame.id)}
-                      className="relative"
+                      onClick={() => onToggleLoveGame(popularGame.id)}
+                      className="relative cursor-pointer"
                     >
                       <AiOutlineHeart
                         className=" fill-white absolute -top-[2px] -right-[2px]"

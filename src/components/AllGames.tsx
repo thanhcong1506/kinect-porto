@@ -5,14 +5,12 @@ import ListItem from "./ListItem";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { fetchGamesAsync, selectAllGames } from "@/redux/gameSlice";
 
-interface AllGamesProp {
-  games: Games[];
-  onToggleFavorite: (gameId: number) => void;
+interface AllGameProps {
+  onToggleLoveGame: (gameId: number) => void;
 }
 
-const AllGames = () => {
-  // const { games, onToggleFavorite } = props;
-
+const AllGames = (props: AllGameProps) => {
+  const { onToggleLoveGame } = props;
   const dispatch = useAppDispatch();
   const games = useAppSelector(selectAllGames);
 
@@ -39,7 +37,7 @@ const AllGames = () => {
             <ListItem
               game={game}
               key={game.id}
-              onToggleFavorite={onToggleFavorite}
+              onToggleLoveGame={onToggleLoveGame}
             />
           </div>
         ))}

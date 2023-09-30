@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
-import { createAsyncThunk, createEntityAdapter } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { getSession } from "next-auth/react";
 import { useApi } from "./apiSlice";
@@ -9,7 +9,6 @@ interface GamesState {
   allGames: Games[];
   newGames: Games[];
   popularGames: Games[];
-  lovedGames: Games[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
@@ -18,12 +17,12 @@ const initialState: GamesState = {
   allGames: [],
   newGames: [],
   popularGames: [],
-  lovedGames: [],
   status: "idle",
   error: null,
 };
 const getApiHeader = async () => {
   const session = await getSession();
+
   const apiToken = useApi(session?.user.access_token);
   return apiToken;
 };
@@ -119,18 +118,6 @@ const gamesSlice = createSlice({
       .addCase(fetchPopularGamesAsync.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || null;
-      })
-
-      .addCase(fetchLovedGamesAsync.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.lovedGames = action.payload;
-      })
-      .addCase(fetchLovedGamesAsync.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(fetchLovedGamesAsync.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.error.message || null;
       });
   },
 });
@@ -138,5 +125,4 @@ export const selectAllGames = (state: RootState) => state.games.allGames;
 export const selectNewGames = (state: RootState) => state.games.newGames;
 export const selectPopularGames = (state: RootState) =>
   state.games.popularGames;
-export const selectLovedGames = (state: RootState) => state.games.lovedGames;
 export default gamesSlice.reducer;

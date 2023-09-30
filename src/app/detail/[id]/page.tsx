@@ -1,33 +1,32 @@
 "use client";
 import ImageModal from "@/components/ImageModal";
-import ScreenShotModal from "@/components/ScreenshotModal";
 import axios from "axios";
-import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
 import {
   AiFillHeart,
   AiOutlineHeart,
   AiOutlineLeftCircle,
   AiOutlineRightCircle,
 } from "react-icons/ai";
-import useSWR, { Fetcher } from "swr";
-
-const fetcher: Fetcher<GameDetail, string> = (url: string) =>
-  fetch(url).then((res) => res.json());
 
 const Detail = ({ params }: { params: { id: number } }) => {
-  const { data, error, isLoading } = useSWR(
-    `https://user-api.dev.grailfarmer.app/api/v1/games/detail/${params.id}`,
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
-  );
-  console.log(data);
-  const [currentImage, setCurrentImage] = useState<string | undefined>(
-    undefined
-  );
+  const { data: session } = useSession();
+  const token = session?.user.access_token;
+  const [data, setData] = useState<GameDetail | null>(null);
+  useEffect(() => {
+    const getUserDetail = async () => {
+      const { data } = await axios.get(
+        `https://user-api.dev.grailfarmer.app/api/v1/games/detail/${params.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setData(data);
+    };
+    getUserDetail();
+  }, [token]);
 
   const openModal = (image: string) => {
     setCurrentImage(image);
@@ -37,26 +36,33 @@ const Detail = ({ params }: { params: { id: number } }) => {
     setCurrentImage("");
   };
 
+  const [currentImage, setCurrentImage] = useState<string | undefined>(
+    undefined
+  );
+
   const handleNextImage = () => {
     const dataImage = data?.game_screenshots;
-    console.log(dataImage);
-    let currentIndex;
-    // if(dataImage{
-
-    //    currentIndex = dataImage?.indexOf(currentImage);
-    // })
-    // if (currentIndex < dataImage?.length - 1) {
-    //   setCurrentImage(data?.game_screenshots?[currentIndex + 1]);
-    // }
+    if (dataImage && currentImage) {
+      const currentIndex = dataImage.findIndex(
+        (image) => image === currentImage
+      );
+      if (currentIndex !== -1 && currentIndex < dataImage.length - 1) {
+        setCurrentImage(dataImage[currentIndex + 1]);
+      }
+    }
   };
 
   const handlePrevImage = () => {
-    // const currentIndex = data?.game_screenshots.indexOf(currentImage);
-    // if (currentIndex > 0) {
-    //   setCurrentImage(data?.game_screenshots?[currentIndex - 1]);
-    // }
+    const dataImage = data?.game_screenshots;
+    if (dataImage && currentImage) {
+      const currentIndex = dataImage.findIndex(
+        (image) => image === currentImage
+      );
+      if (currentIndex !== -1 && currentIndex > 0) {
+        setCurrentImage(dataImage[currentIndex - 1]);
+      }
+    }
   };
-
   return (
     <div className=" bg-detail bg-cover overflow-hidden w-full min-h-screen text-white">
       <div className=" container mx-auto max-w-[1300px] pt-24">

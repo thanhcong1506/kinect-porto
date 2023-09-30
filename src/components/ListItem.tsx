@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -7,11 +6,11 @@ import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 interface GameProps {
   game: Games;
-  onToggleFavorite: (gameId: number, isFavorites: boolean | undefined) => void;
+  onToggleLoveGame: (gameId: number) => void;
 }
 
 const ListItem = (props: GameProps) => {
-  const { game, onToggleFavorite } = props;
+  const { game, onToggleLoveGame } = props;
   const router = useRouter();
 
   const handleClick = (id: number) => {
@@ -43,7 +42,7 @@ const ListItem = (props: GameProps) => {
           <p className=" font-extrabold text-lg">{game.name}</p>
           <p
             className=" cursor-pointer relative "
-            onClick={() => onToggleFavorite(game.id, game.isLoved)}
+            onClick={() => onToggleLoveGame(game.id)}
           >
             <AiOutlineHeart
               className=" fill-white absolute -top-[2px] -right-[2px]"

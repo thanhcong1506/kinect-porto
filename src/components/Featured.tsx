@@ -1,6 +1,5 @@
 "use client";
 import axios from "axios";
-import { url } from "inspector";
 import { useState, useEffect } from "react";
 
 const getAllgames = async () => {
@@ -33,14 +32,14 @@ const Featured = () => {
   return (
     <div className=" w-full ">
       <div className=" container mx-auto px-8 pt-[80px]">
-        <div className=" h-[415px] rounded-lg overflow-hidden  relative ">
+        <div className=" h-[415px] rounded-lg overflow-hidden  relative flex transition-transform ease-out duration-1000">
           <div className="w-full h-full bg-transparent-to-bottom absolute top-0 left-0"></div>
           <img
             className=" w-full h-full object-cover"
             src={games[currentSlide]?.image_url}
             alt={`img slide  ${games[0]}`}
           />
-          <div className=" absolute bottom-4 left-6 w-1/3 space-y-2">
+          <div className=" absolute bottom-12 left-6 w-1/3 space-y-2">
             <div className=" flex gap-2">
               {games[currentSlide]?.genres?.map((genre) => (
                 <button
@@ -65,6 +64,20 @@ const Featured = () => {
               <button className=" main-button outline bg-none">
                 Learn More
               </button>
+            </div>
+          </div>
+          <div className="absolute bottom-4 right-0 left-0">
+            <div className="flex items-center justify-center gap-2">
+              {games.map((_, i) => (
+                <div
+                  onClick={() => setCurrentSlide(i)}
+                  key={i}
+                  className={`
+              transition-all w-3 h-1 bg-white cursor-pointer
+              ${currentSlide === i ? "w-5" : "bg-opacity-50"}
+            `}
+                />
+              ))}
             </div>
           </div>
         </div>

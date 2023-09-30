@@ -1,14 +1,24 @@
 "use client";
-import { useEffect, useState } from "react";
-import React from "react";
+import React, { useCallback } from "react";
 import Featured from "./Featured";
 import NewGame from "./NewGame";
 import PopularGame from "./PopularGame";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import Link from "next/link";
 import AllGames from "./AllGames";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { toggleLovedGame } from "@/redux/gameLovedSlice";
 
 const Home = () => {
+  const { lovedGames } = useAppSelector((state) => state.lovedGame);
+  const dispatch = useAppDispatch();
+
+  const handleToggleLoveGame = useCallback(
+    (gameId: number) => {
+      dispatch(toggleLovedGame(gameId));
+    },
+    [lovedGames]
+  );
   return (
     <div className=" bg-[#1a2024] text-white py-5 ">
       <div className=" pt-2 ">
@@ -23,13 +33,13 @@ const Home = () => {
                 hot
               </span>
             </div>
-            <NewGame />
+            <NewGame onToggleLoveGame={handleToggleLoveGame} />
           </div>
           <div className="mt-4 ps-10">
             <p className=" text-3xl font-bold uppercase pb-2 text-white">
               popular game
             </p>
-            <PopularGame />
+            <PopularGame onToggleLoveGame={handleToggleLoveGame} />
           </div>
           <div className="mt-8 container mx-auto px-10">
             <div className=" flex justify-between ps-8 pb-2 relative">
@@ -46,7 +56,7 @@ const Home = () => {
             </div>
 
             <div className=" grid grid-cols-4 gap-x-4 gap-y-6">
-              <AllGames />
+              <AllGames onToggleLoveGame={handleToggleLoveGame} />
             </div>
           </div>
         </div>
