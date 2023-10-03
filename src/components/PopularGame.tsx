@@ -7,16 +7,19 @@ import DownloadButton from "./DownloadButton";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { fetchPopularGamesAsync } from "@/redux/gameSlice";
+import Skeleton from "@/utils/Skeleton";
 
 interface PopularGameProps {
   onToggleLoveGame: (gameId: number) => void;
+  isHandlingToggle: boolean;
 }
 
-const PopularGame = (props: PopularGameProps) => {
-  const { onToggleLoveGame } = props;
-
+const PopularGame = ({
+  onToggleLoveGame,
+  isHandlingToggle,
+}: PopularGameProps) => {
   const dispatch = useAppDispatch();
-  const { popularGames } = useAppSelector((state) => state.games);
+  const { popularGames, status } = useAppSelector((state) => state.games);
 
   useEffect(() => {
     dispatch(fetchPopularGamesAsync());
@@ -50,58 +53,72 @@ const PopularGame = (props: PopularGameProps) => {
         className=" flex w-max h-full  transition-all ease-in-out duration-700"
         ref={listRef}
       >
-        {popularGames.map((popularGame) => (
-          <div
-            key={popularGame.id}
-            className="  w-[312px] h-[348px] hover:min-w-[624px] hover:bg-black hover:shadow-md hover:rounded-md ease-in-out duration-1000 transition-width mx-0 hover:mx-3"
-          >
-            <div className="flex group gap-5 w-full h-full ">
-              <Image
-                className=" rounded-3xl p-3 object-cover"
-                src={popularGame.image_url}
-                alt=""
-                width={312}
-                height={348}
-              />
-              <div className="hidden w-[300px] group-hover:flex items-center justify-center">
-                <div className=" flex flex-col gap-3 text-white w-full pe-3">
-                  <div className=" flex gap-3">
-                    <button className=" secondary-button">Action</button>
-                    <button className=" secondary-button">Adventure</button>
+        {status === "loading" && !isHandlingToggle ? (
+          <Skeleton />
+        ) : (
+          <>
+            {popularGames.map((popularGame) => (
+              <div
+                key={popularGame.id}
+                className="  w-[312px] h-[348px] hover:min-w-[624px] hover:bg-black hover:shadow-md hover:rounded-md ease-in-out duration-1000 transition-width mx-0 hover:mx-3"
+              >
+                <div className="flex group gap-5 w-full h-full ">
+                  <Image
+                    className=" rounded-3xl p-3 object-cover"
+                    src={popularGame.image_url}
+                    alt=""
+                    width={312}
+                    height={348}
+                  />
+                  <div className="hidden w-[300px] group-hover:flex items-center justify-center">
+                    <div className=" flex flex-col gap-3 text-white w-full pe-3">
+                      <div className=" flex gap-1  ">
+                        {popularGame.genres?.map((genre) => (
+                          <Link
+                            key={genre.id}
+                            href={`/games-genre/${genre.id}`}
+                          >
+                            <button className=" secondary-button !text-xs !py-1 ">
+                              {genre.name}{" "}
+                            </button>
+                          </Link>
+                        ))}
+                      </div>
+                      <div className=" flex items-center">
+                        <h1 className=" text-2xl font-semibold me-3">
+                          {popularGame.name}
+                        </h1>
+                        <span
+                          onClick={() => onToggleLoveGame(popularGame.id)}
+                          className="relative cursor-pointer"
+                        >
+                          <AiOutlineHeart
+                            className=" fill-white absolute -top-[2px] -right-[2px]"
+                            size={28}
+                          />
+                          <AiFillHeart
+                            className={
+                              popularGame.isLoved
+                                ? "fill-rose-500"
+                                : " fill-neutral-500/70"
+                            }
+                            size={24}
+                          />
+                        </span>
+                      </div>
+                      <p className="text-xs w-full  line-clamp-4">
+                        {popularGame.description}
+                      </p>
+                      <Link href={popularGame.download_url}>
+                        <DownloadButton />
+                      </Link>
+                    </div>
                   </div>
-                  <div className=" flex items-center">
-                    <h1 className=" text-2xl font-semibold me-3">
-                      {popularGame.name}
-                    </h1>
-                    <span
-                      onClick={() => onToggleLoveGame(popularGame.id)}
-                      className="relative cursor-pointer"
-                    >
-                      <AiOutlineHeart
-                        className=" fill-white absolute -top-[2px] -right-[2px]"
-                        size={28}
-                      />
-                      <AiFillHeart
-                        className={
-                          popularGame.isLoved
-                            ? "fill-rose-500"
-                            : " fill-neutral-500/70"
-                        }
-                        size={24}
-                      />
-                    </span>
-                  </div>
-                  <p className="text-xs w-full  line-clamp-4">
-                    {popularGame.description}
-                  </p>
-                  <Link href={popularGame.download_url}>
-                    <DownloadButton />
-                  </Link>
                 </div>
               </div>
-            </div>
-          </div>
-        ))}
+            ))}
+          </>
+        )}
       </div>
 
       <FiChevronLeft

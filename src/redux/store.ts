@@ -2,15 +2,13 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 import userReducer from "./userSlice";
 import gamesReducer from "./gameSlice";
-// import favoritesReducer from "./loveGameSlice";
-import loveGameReducer from "./gameLovedSlice";
+import genreReducer from "./genreSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     games: gamesReducer,
-
-    lovedGame: loveGameReducer,
+    genre: genreReducer,
   },
 });
 

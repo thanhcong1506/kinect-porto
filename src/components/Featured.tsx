@@ -1,6 +1,8 @@
 "use client";
 import axios from "axios";
+import Link from "next/link";
 import { useState, useEffect } from "react";
+import DownloadButton from "./DownloadButton";
 
 const getAllgames = async () => {
   const res = await axios.get(
@@ -42,12 +44,11 @@ const Featured = () => {
           <div className=" absolute bottom-12 left-6 w-1/3 space-y-2">
             <div className=" flex gap-2">
               {games[currentSlide]?.genres?.map((genre) => (
-                <button
-                  className=" py-2 px-3 bg-[#2f3940] rounded-full"
-                  key={genre.id}
-                >
-                  {genre.name}
-                </button>
+                <Link key={genre.id} href={`/games-genre/${genre.id}`}>
+                  <button className=" py-2 px-3 bg-[#2f3940] rounded-full">
+                    {genre.name}
+                  </button>
+                </Link>
               ))}
             </div>
             <h1 className=" text-4xl font-semibold">
@@ -57,13 +58,16 @@ const Featured = () => {
               {games[currentSlide]?.description}
             </p>
             <div className="flex gap-3">
-              <button className=" main-button flex gap-2 items-center">
-                Download
-                <img src="/arrowDown.png" alt="" />
-              </button>
-              <button className=" main-button outline bg-none">
-                Learn More
-              </button>
+              {games[currentSlide]?.download_url && (
+                <Link href={games[currentSlide]?.download_url} passHref>
+                  <DownloadButton />
+                </Link>
+              )}
+              <Link href={`/detail/${games[currentSlide]?.id}`}>
+                <button className=" main-button !py-[6px] outline bg-none">
+                  Learn More
+                </button>
+              </Link>
             </div>
           </div>
           <div className="absolute bottom-4 right-0 left-0">

@@ -1,11 +1,10 @@
-import { category } from "@/type/data";
 import React from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 
-interface categroryProps {
-  category: category;
+interface CategroryProps {
+  category: Category;
 }
-const CategoryItem = (props: categroryProps) => {
+const CategoryItem = (props: CategroryProps) => {
   const { category } = props;
 
   return (

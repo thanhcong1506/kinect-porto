@@ -3,7 +3,7 @@ import { BsArrowDownShort } from "react-icons/bs";
 
 const DownloadButton = () => {
   return (
-    <div className=" main-button flex items-center w-max ">
+    <div className=" main-button flex items-center w-max cursor-pointer">
       <span>Download</span>
       <span>
         <BsArrowDownShort size={24} />

@@ -18,13 +18,13 @@ const ListItem = (props: GameProps) => {
   };
 
   return (
-    <div className="  bg-[rgba(0,0,0,0.3)]  relative w-full h-full">
+    <div className="  bg-[rgba(0,0,0,0.3)]  relative w-full h-full rounded-3xl overflow-hidden">
       <div
         onClick={() => handleClick(game.id)}
         className=" w-full h-full bg-transparent-to-bottom absolute top-0 left-0 cursor-pointer"
       ></div>
       <img
-        className=" w-full h-full cursor-pointer bg-transparenTotop "
+        className=" w-full h-full cursor-pointer bg-transparenTotop  "
         src={game.image_url}
         alt=""
       />
@@ -33,9 +33,11 @@ const ListItem = (props: GameProps) => {
         <div className=" flex gap-1">
           {game.genres &&
             game.genres.map((genre) => (
-              <button key={genre.id} className=" secondary-button !text-xs">
-                {genre.name}
-              </button>
+              <Link key={genre.id} href={`/games-genre/${genre.id}`}>
+                <button className=" secondary-button !text-xs">
+                  {genre.name}
+                </button>
+              </Link>
             ))}
         </div>
         <div className="flex justify-between pe-12  items-center">

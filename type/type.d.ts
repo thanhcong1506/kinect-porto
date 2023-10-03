@@ -19,7 +19,7 @@ type Games = {
   ];
 };
 
-interface GameDetail {
+type GameDetail = {
   image_url: string;
   download_url: string;
   isLoved?: boolean;
@@ -33,18 +33,26 @@ interface GameDetail {
     }
   ];
   game_screenshots: string[] | [];
-}
-interface Game {
+};
+type Game = {
   image_url: string;
   isLoved?: boolean;
   id: number;
   name: string;
-}
-interface GameFavorite {
+};
+type GameLoved = {
   myGame: Game[];
-}
+};
 
-interface ActionTypes {
-  addToCartFavorite: (item: Game) => void;
-  removeFromCartFavorite: (item: Game) => void;
-}
+type Genre = {
+  id: number;
+  name: string;
+  icon: string;
+};
+
+type Category = {
+  id: number;
+  name: string;
+  icon: string;
+  isLove?: boolean;
+};

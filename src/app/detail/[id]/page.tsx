@@ -1,44 +1,76 @@
 "use client";
-import ImageModal from "@/components/ImageModal";
-import axios from "axios";
+import React, { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import ImageModal from "@/components/ImageModal";
+import { useAppDispatch } from "@/redux/hook";
+import { toggleLovedGame } from "@/redux/gameSlice";
 import {
   AiFillHeart,
   AiOutlineHeart,
   AiOutlineLeftCircle,
   AiOutlineRightCircle,
 } from "react-icons/ai";
+import Link from "next/link";
+import { MdOutlineExpandMore, MdOutlineExpandLess } from "react-icons/md";
+import axios from "axios";
 
-const Detail = ({ params }: { params: { id: number } }) => {
-  const { data: session } = useSession();
-  const token = session?.user.access_token;
-  const [data, setData] = useState<GameDetail | null>(null);
+const Detail = ({ params }: { params: { id: string } }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [data, setData] = useState<GameDetail>();
+  const [currentImage, setCurrentImage] = useState<string | undefined>(
+    undefined
+  );
+  const [isOverflow, setIsOverflow] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+
   useEffect(() => {
-    const getUserDetail = async () => {
-      const { data } = await axios.get(
-        `https://user-api.dev.grailfarmer.app/api/v1/games/detail/${params.id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      setData(data);
+    const updateOverflow = () => {
+      if (descriptionRef.current) {
+        setIsOverflow(
+          descriptionRef.current.scrollHeight >
+            descriptionRef.current.clientHeight
+        );
+      }
     };
-    getUserDetail();
+
+    updateOverflow();
+
+    window.addEventListener("resize", updateOverflow);
+    return () => {
+      window.removeEventListener("resize", updateOverflow);
+    };
+  }, []);
+  const { data: session } = useSession();
+  const dispatch = useAppDispatch();
+  const token = session?.user?.access_token;
+
+  const fetchGameDetail = async () => {
+    const { data } = await axios.get(
+      `https://user-api.dev.grailfarmer.app/api/v1/games/detail/${params.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setData(data);
+  };
+
+  useEffect(() => {
+    fetchGameDetail();
   }, [token]);
+
+  const handleToggleReadMore = () => {
+    setIsExpanded(!isExpanded);
+  };
 
   const openModal = (image: string) => {
     setCurrentImage(image);
   };
 
   const closeModal = () => {
-    setCurrentImage("");
+    setCurrentImage(undefined);
   };
-
-  const [currentImage, setCurrentImage] = useState<string | undefined>(
-    undefined
-  );
 
   const handleNextImage = () => {
     const dataImage = data?.game_screenshots;
@@ -63,11 +95,22 @@ const Detail = ({ params }: { params: { id: number } }) => {
       }
     }
   };
+
+  const handleToggleLoveImages = (id: number | undefined) => {
+    const promise = dispatch(toggleLovedGame(id))
+      .then(() => {
+        fetchGameDetail();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className=" bg-detail bg-cover overflow-hidden w-full min-h-screen text-white">
       <div className=" container mx-auto max-w-[1300px] pt-24">
         <div className="flex">
-          <span>{`Home {&gt;&nbsp;} `}</span>
+          <span>Home &gt;&nbsp;</span>
           <span> {data?.name}</span>
         </div>
         <div className="w-full h-[400px] rounded-xl object-contain overflow-hidden">
@@ -79,7 +122,10 @@ const Detail = ({ params }: { params: { id: number } }) => {
             <div className=" flex flex-col gap-2">
               <div className="flex gap-10 items-center">
                 <h1 className=" text-5xl">{data?.name}</h1>
-                <span className=" relative">
+                <span
+                  onClick={() => handleToggleLoveImages(data?.id)}
+                  className=" relative cursor-pointer"
+                >
                   <AiOutlineHeart
                     className=" fill-white absolute -top-[2px] -right-[2px]"
                     size={28}
@@ -94,9 +140,9 @@ const Detail = ({ params }: { params: { id: number } }) => {
               </div>
               <div className=" flex gap-1">
                 {data?.genres.map((genre) => (
-                  <button key={genre.id} className=" secondary-button">
-                    {genre.name}
-                  </button>
+                  <Link key={genre.id} href={`/games-genre/${genre.id}`}>
+                    <button className=" secondary-button">{genre.name}</button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -116,13 +162,31 @@ const Detail = ({ params }: { params: { id: number } }) => {
           </div>
 
           <div className=" flex flex-col gap-3">
-            <p className=" w-2/3">{data?.description}</p>
-            <button className=" secondary-button flex items-center gap-1 w-max">
-              <span className=" text-[#50ABFF]">Read More</span>
-              <span>
-                <img src="/down.png" alt="" />
-              </span>
-            </button>
+            <p
+              ref={descriptionRef}
+              className={`w-1/2 ${
+                !isExpanded ? "line-clamp-3 " : "max-h-none"
+              } `}
+            >
+              {data?.description}
+            </p>
+            {isOverflow && (
+              <button
+                onClick={handleToggleReadMore}
+                className=" !pe-0 secondary-button flex items-center gap-1 w-max text-[#50ABFF] cursor-pointer hover:opacity-70"
+              >
+                <span className=" ">
+                  {isExpanded ? " Read Less " : " Read More "}
+                </span>
+                <span className="">
+                  {isExpanded ? (
+                    <MdOutlineExpandLess size={30} />
+                  ) : (
+                    <MdOutlineExpandMore size={30} />
+                  )}
+                </span>
+              </button>
+            )}
           </div>
         </div>
         <div className="pt-5 pb-10">
@@ -157,6 +221,8 @@ const Detail = ({ params }: { params: { id: number } }) => {
                 onCloseModal={closeModal}
                 onNextImage={handleNextImage}
                 onPrevImage={handlePrevImage}
+                currentImage={currentImage}
+                data={data?.game_screenshots}
               />
             )}
           </div>

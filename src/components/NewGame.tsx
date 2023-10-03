@@ -1,26 +1,24 @@
 "use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ListItem from "./ListItem";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { fetchLovedGamesAsync, fetchNewGamesAsync } from "@/redux/gameSlice";
-import { toggleLovedGame } from "@/redux/gameLovedSlice";
-import { toast } from "react-toastify";
+import { fetchNewGamesAsync } from "@/redux/gameSlice";
 import Skeleton from "@/utils/Skeleton";
-import { useRouter } from "next/navigation";
+import { RootState } from "@/redux/store";
 
 interface NewsGameProps {
   onToggleLoveGame: (gameId: number) => void;
+  isHandlingToggle: boolean;
 }
 const ListNewGames = (props: NewsGameProps) => {
-  const { onToggleLoveGame } = props;
+  const { onToggleLoveGame, isHandlingToggle } = props;
   const dispatch = useAppDispatch();
 
-  const { status, newGames } = useAppSelector((state) => state.games);
-  const { lovedGames } = useAppSelector((state) => state.lovedGame);
-  const router = useRouter();
+  const { status, newGames } = useAppSelector(
+    (state: RootState) => state.games
+  );
 
-  // console.log("newww", newGames);
   useEffect(() => {
     dispatch(fetchNewGamesAsync());
   }, [dispatch]);
@@ -53,24 +51,24 @@ const ListNewGames = (props: NewsGameProps) => {
         className=" flex w-max  gap-x-6 transition-all ease-in-out duration-700 group"
         ref={listRef}
       >
-        {/* {status === "loading" ? (
-          <p>Loading...</p>
+        {status === "loading" && !isHandlingToggle ? (
+          <Skeleton />
         ) : (
-          <> */}
-        {newGames?.map((newgame: Games) => (
-          <div
-            className="w-[312px] h-[348px] rounded-lg overflow-hidden"
-            key={newgame.id}
-          >
-            <ListItem
-              game={newgame}
-              onToggleLoveGame={onToggleLoveGame}
-              key={newgame.id}
-            />
-          </div>
-        ))}
-        {/* </>
-        )} */}
+          <>
+            {newGames?.map((newgame: Games) => (
+              <div
+                className="w-[312px] h-[348px] rounded-lg overflow-hidden"
+                key={newgame.id}
+              >
+                <ListItem
+                  game={newgame}
+                  onToggleLoveGame={onToggleLoveGame}
+                  key={newgame.id}
+                />
+              </div>
+            ))}
+          </>
+        )}
       </div>
       <FiChevronLeft
         onClick={() => handleClick("left")}

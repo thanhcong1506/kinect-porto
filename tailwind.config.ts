@@ -24,11 +24,11 @@ const config: Config = {
       primary: ["Roboto", "sans-serif"],
     },
 
-    transitionProperty: {
-      height: "height",
-      spacing: "margin, padding",
-      width: "width",
-    },
+    // transitionProperty: {
+    //   height: "height",
+    //   spacing: "margin, padding",
+    //   width: "width",
+    // },
   },
   plugins: [],
 };

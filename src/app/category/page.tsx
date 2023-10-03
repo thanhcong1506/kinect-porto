@@ -1,24 +1,33 @@
+"use client";
+
 import CategoryItem from "@/components/CategoryItem";
+import { fetchGenres } from "@/redux/genreSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { RootState } from "@/redux/store";
 import Link from "next/link";
-import React from "react";
-import { genres } from "../../data";
+import React, { useEffect } from "react";
 import { BiChevronDown } from "react-icons/bi";
 
 const Category = () => {
+  const { genre } = useAppSelector((state: RootState) => state.genre);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchGenres());
+  }, [dispatch]);
   return (
     <div className=" bg-[#1a2024] pt-[80px] text-white font-primary">
       <div className=" container mx-auto px-8 py-3">
         <div className=" flex my-2">
           <p>
             <Link href={"/"}>Home </Link>
-            <span>{`&gt;&nbsp;`}</span>
+            <span>&gt;&nbsp;</span>
           </p>
           <p>Tag Category</p>
         </div>
 
         <div className=" text-5xl font-black">Tag Category</div>
         <div className=" grid grid-cols-4 gap-10 ">
-          {genres.map((cate) => (
+          {genre.map((cate) => (
             <CategoryItem category={cate} key={cate.id} />
           ))}
         </div>

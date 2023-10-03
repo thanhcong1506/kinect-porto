@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -16,13 +16,14 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
-
-/* body {
-  background-color: #1a2024;
- 
-  
 } */
+
+html,
+body,
+:root {
+  height: 100%;
+  background-color: #1a2024;
+}
 @layer components {
   .main-button {
     @apply bg-gradient-to-r from-[#4776E6] via-[#8E54E9]  to-[#4776E6] text-white px-6 py-2 rounded-xl;
@@ -33,7 +34,7 @@
   }
 
   .secondary-button {
-    @apply bg-[#2F3940] text-white px-3 py-2 rounded-2xl text-sm;
+    @apply bg-[#2F3940] text-white px-2 py-1 rounded-2xl text-sm;
   }
   .hover-icon-user {
     @apply before:content-[''] before:absolute before:w-full h-full before:block before:bg-red-600 top-[-60px];

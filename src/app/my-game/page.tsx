@@ -1,30 +1,32 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { fetchLovedGames, removeLovedGame } from "@/redux/gameLovedSlice";
+import { fetchLovedGamesAsync, removeLovedGame } from "@/redux/gameSlice";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { BiChevronDown } from "react-icons/bi";
 import { toast } from "react-toastify";
 import Skeleton from "@/utils/Skeleton";
+import { error } from "console";
 
 const MyGame = () => {
   const dispatch = useAppDispatch();
-  // const lovedGames = useAppSelector(selectLovedGames);
-  const { lovedGames, status } = useAppSelector((state) => state.lovedGame);
+  const { lovedGames, status } = useAppSelector((state) => state.games);
 
   useEffect(() => {
-    dispatch(fetchLovedGames());
+    dispatch(fetchLovedGamesAsync());
   }, [dispatch]);
 
   const handleDeleteGame = (gameId: number) => {
     try {
-      const { requestId } = dispatch(removeLovedGame(gameId));
-      console.log("dis", requestId);
-      if (requestId) {
-        dispatch(fetchLovedGames());
-      }
-      toast.error("Remove love game");
+      dispatch(removeLovedGame(gameId))
+        .then(() => {
+          dispatch(fetchLovedGamesAsync());
+          toast.error("Remove love game");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } catch (error) {}
   };
 
@@ -39,33 +41,38 @@ const MyGame = () => {
           <p>My Game</p>
         </div>
         <div className="text-5xl font-black">My Game</div>
-
-        {lovedGames.length > 0 ? (
-          <div className="grid grid-cols-4 gap-10">
-            {lovedGames.map((game) => (
-              <div key={game.id} className="py-5 h-[264px]">
-                <div className="w-full h-full bg-black rounded-xl p-2">
-                  <img
-                    className="w-full h-full border border-purple-700 overflow-hidden rounded-xl"
-                    src={game.image_url}
-                    alt=""
-                  />
-                </div>
-                <div className="flex justify-between px-3 items-center my-2">
-                  <p>{game.name}</p>
-                  <AiFillHeart
-                    onClick={() => handleDeleteGame(game.id)}
-                    size={30}
-                    className="fill-rose-500 cursor-pointer"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+        {status === "loading" ? (
+          <Skeleton />
         ) : (
-          <p className="text-lg flex justify-center items-center text-red-500">
-            No favorite games
-          </p>
+          <>
+            {lovedGames.length > 0 ? (
+              <div className="grid grid-cols-4 gap-10">
+                {lovedGames.map((game) => (
+                  <div key={game.id} className="py-5 h-[264px]">
+                    <div className="w-full h-full bg-black rounded-xl p-2">
+                      <img
+                        className="w-full h-full border border-purple-700 overflow-hidden rounded-xl"
+                        src={game.image_url}
+                        alt=""
+                      />
+                    </div>
+                    <div className="flex justify-between px-3 items-center my-2">
+                      <p>{game.name}</p>
+                      <AiFillHeart
+                        onClick={() => handleDeleteGame(game.id)}
+                        size={30}
+                        className="fill-rose-500 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-lg flex justify-center items-center text-red-500">
+                No favorite games
+              </p>
+            )}
+          </>
         )}
         <div className="w-1/2 mx-auto bg-black rounded-xl py-5 mt-5 relative">
           <div className="absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%]">
