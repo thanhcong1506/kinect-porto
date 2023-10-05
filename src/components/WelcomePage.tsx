@@ -2,11 +2,14 @@
 import { fetchGamesAsync } from "@/redux/gameSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function WelcomePage() {
+  const { data: session } = useSession();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { allGames, status } = useAppSelector(
@@ -16,6 +19,15 @@ export default function WelcomePage() {
   useEffect(() => {
     dispatch(fetchGamesAsync());
   }, [dispatch]);
+
+  const handleDetail = (gameId: number) => {
+    if (session?.user) {
+      router.push(`/detail/${gameId}`);
+    } else {
+      router.push("/login");
+      toast.error("Please login first!!!");
+    }
+  };
   return (
     <div className=" w-full mx-auto ">
       <div className=" bg-cover w-full bg-welcome h-screen overflow-hidden relative">
@@ -56,13 +68,13 @@ export default function WelcomePage() {
                 <>
                   {allGames.map((game) => (
                     <div key={game.id}>
-                      <Link href={`/detail/${game.id}`}>
-                        <img
-                          className="w-[200px] h-[120px]   rounded-md overflow-hidden cursor-pointer hover:scale-110 transition-all ease-in-out duration-300"
-                          src={game.image_url}
-                          alt=""
-                        />
-                      </Link>
+                      <img
+                        onClick={() => handleDetail(game.id)}
+                        className="w-[200px] h-[120px]   rounded-md overflow-hidden cursor-pointer hover:scale-110 transition-all ease-in-out duration-300"
+                        src={game.image_url}
+                        alt=""
+                      />
+
                       <p className="text-white">{game.name}</p>
                     </div>
                   ))}
