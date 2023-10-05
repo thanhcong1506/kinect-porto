@@ -3,8 +3,7 @@ import type { RootState } from "./store";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { getSession } from "next-auth/react";
-import { useApi } from "./apiSlice";
-// import { fetchLovedGames } from "./gameLovedSlice";
+import { useApi, useGetApiHeader } from "./apiSlice";
 import { toast } from "react-toastify";
 
 interface GamesState {
@@ -24,20 +23,12 @@ const initialState: GamesState = {
   status: "idle",
   error: null,
 };
-const useGetApiHeader = async () => {
-  const session = await getSession();
-
-  const apiToken = useApi(session?.user.access_token);
-  return apiToken;
-};
 
 export const fetchGamesAsync = createAsyncThunk(
   "games/fetchGames",
   async (_, thunkApi) => {
     const apiClient = await useGetApiHeader();
-    const { data } = await apiClient.get<Games[]>("/games?limit=10&page=1", {
-      signal: thunkApi.signal,
-    });
+    const { data } = await apiClient.get<Games[]>("/games?limit=10&page=1");
     const { rows } = data as unknown as { rows: Games[] };
     return rows;
   }
@@ -47,8 +38,7 @@ export const fetchNewGamesAsync = createAsyncThunk(
   async (_, thunkApi) => {
     const apiClient = await useGetApiHeader();
     const { data } = await apiClient.get<Games[]>(
-      "/games/newest?limit=10&page=1",
-      { signal: thunkApi.signal }
+      "/games/newest?limit=10&page=1"
     );
 
     const { rows } = data as unknown as { rows: Games[] };
@@ -60,8 +50,7 @@ export const fetchPopularGamesAsync = createAsyncThunk(
   async (_, thunkApi) => {
     const apiClient = await useGetApiHeader();
     const { data } = await apiClient.get<Games[]>(
-      "/games/newest?limit=10&page=1",
-      { signal: thunkApi.signal }
+      "/games/newest?limit=10&page=1"
     );
     const { rows } = data as unknown as { rows: Games[] };
     return rows;

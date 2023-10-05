@@ -1,4 +1,5 @@
-"use client";
+import { getSession } from "next-auth/react";
+
 import axios from "axios";
 
 const apiClient = axios.create({
@@ -16,23 +17,9 @@ export const useApi = (token: string | undefined) => {
   return apiClient;
 };
 
-// export const fetchGames = async (url: string): Promise<Game[]> => {
-//   const response = await apiClient.get(url);
-//   return response.data;
-// };
-
-// export const addLoveGame = (gameId: number): Promise<void> => {
-//   return apiClient.post("/games/love", { gameId });
-// };
-
-// export const removeLoveGame = (gameId: number): Promise<void> => {
-//   return apiClient.delete("/games/love", { data: { gameId } });
-// };
-
-// export const fetchNewGames = (): Promise<Game[]> => {
-//   return fetchGames("/games/newest?limit=10&page=1");
-// };
-
-// export const fetchPopularGames = (): Promise<Game[]> => {
-//   return fetchGames("/games/popular");
-// };
+export const useGetApiHeader = async () => {
+  const session = await getSession();
+  console.log(session?.user);
+  const apiToken = useApi(session?.user.access_token);
+  return apiToken;
+};

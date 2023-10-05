@@ -13,7 +13,7 @@ import { useAppDispatch } from "@/redux/hook";
 const Login: React.FC<{}> = (props: any) => {
   const router = useRouter();
   const { data, status } = useSession();
-  // console.log(data);
+  console.log(data?.user);
   const dispatch = useAppDispatch();
   const [variant, setVariant] = useState("login");
   const [isShowPassword, setIsShowPassword] = useState(false);

@@ -22,7 +22,7 @@ const Detail = ({ params }: { params: { id: string } }) => {
   );
   const [isOverflow, setIsOverflow] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
-
+  console.log("descriptionRef", descriptionRef);
   useEffect(() => {
     const updateOverflow = () => {
       if (descriptionRef.current) {
@@ -39,7 +39,8 @@ const Detail = ({ params }: { params: { id: string } }) => {
     return () => {
       window.removeEventListener("resize", updateOverflow);
     };
-  }, []);
+  }, [descriptionRef.current]);
+
   const { data: session } = useSession();
   const dispatch = useAppDispatch();
   const token = session?.user?.access_token;
@@ -61,7 +62,7 @@ const Detail = ({ params }: { params: { id: string } }) => {
   }, [token]);
 
   const handleToggleReadMore = () => {
-    setIsExpanded(!isExpanded);
+    setIsExpanded((preExpanded) => !preExpanded);
   };
 
   const openModal = (image: string) => {
@@ -164,9 +165,7 @@ const Detail = ({ params }: { params: { id: string } }) => {
           <div className=" flex flex-col gap-3">
             <p
               ref={descriptionRef}
-              className={`w-1/2 ${
-                !isExpanded ? "line-clamp-3 " : "max-h-none"
-              } `}
+              className={`w-1/2 ${!isExpanded ? "line-clamp-3" : ""} `}
             >
               {data?.description}
             </p>

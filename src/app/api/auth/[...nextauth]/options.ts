@@ -4,6 +4,8 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from "next-auth/providers/facebook";
 import axios from "axios";
+import { NextApiRequest, NextApiResponse } from "next";
+import NextAuth from "next-auth/next";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -84,12 +86,34 @@ export const options: NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user, account }) {
-      return { ...token, ...user };
-    },
     async session({ session, token, user }) {
       session.user = token as any;
+
       return session;
+    },
+
+    async jwt({ token, user, account, profile, isNewUser }) {
+      if (user) {
+        token.id = user.id;
+      }
+      if (account?.provider === "google") {
+        // Gửi yêu cầu để lấy accessToken từ API
+        const response = await axios.post(
+          "https://user-api.dev.grailfarmer.app/api/v1/auth/sso",
+          {
+            token: account.id_token, // Sử dụng idToken từ tài khoản Google
+            method: "GOOGLE",
+          }
+        );
+        // Lấy accessToken từ phản hồi
+        const { access_token } = response.data;
+        // Thêm trường accessToken vào session.user
+        return {
+          ...user,
+          access_token,
+        };
+      }
+      return { ...token, ...user };
     },
     async signIn({ user, account, profile, email, credentials }) {
       console.log("account", account);

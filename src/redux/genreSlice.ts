@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { useGetApiHeader } from "./apiSlice";
 
 interface GenreState {
   genre: Genre[];
@@ -13,17 +14,21 @@ const initialState: GenreState = {
   error: null,
 };
 
-export const fetchGenres = createAsyncThunk("genre/fetchGenres", async () => {
-  try {
-    const response = await axios.get(
-      "https://user-api.dev.grailfarmer.app/api/v1/games/genre?limit=10&page=1"
-    );
-    const data = await response.data;
-    return data;
-  } catch (error) {
-    throw new Error("Failed to fetch genres.");
+export const fetchGenres = createAsyncThunk(
+  "genre/fetchGenres",
+  async (_, thunkApi) => {
+    const apiClient = await useGetApiHeader();
+    try {
+      const response = await apiClient.get<Genre[]>(
+        "/games/genre?limit=10&page=1"
+      );
+      const data = await response.data;
+      return data;
+    } catch (error) {
+      throw new Error("Failed to fetch genres.");
+    }
   }
-});
+);
 
 const genreSlice = createSlice({
   name: "genre",
