@@ -109,24 +109,24 @@ const Login: React.FC<{}> = (props: any) => {
 
   return (
     <div>
-      <div className=" container mx-auto  h-full flex">
-        <div className=" w-7/12">
-          <div className=" w-full bg-cover bg-login h-screen overflow-hidden  "></div>
+      <div className=" w-full  mx-auto  h-screen flex overflow-hidden ">
+        <div className="w-0  md:w-6/12 lg:w-7/12">
+          <div className=" w-full bg-cover bg-none md:bg-login h-full  "></div>
         </div>
-        <div className=" w-5/12 h-screen ">
-          <div className="bg-[#14191D] h-full w-full relative ">
-            <div className=" flex gap-3 justify-end pe-7 pt-7">
+        <div className="w-full md:w-6/12 lg:w-5/12 h-full  bg-[#14191D]">
+          <div className=" h-full w-full relative ">
+            <div className=" flex gap-3 justify-end  lg:pe-3  xl:pe-7 pt-7 pe-5">
               <p className=" uppercase text-[#344148] font-extrabold text-base">
                 {`haven't a account`}
               </p>
               <Link href={"/signup"}>
-                <button className=" uppercase text-white">sign up</button>
+                <button className=" uppercase text-white ">sign up</button>
               </Link>
             </div>
-            <div className=" flex items-center h-full ps-16 absolute top-0 left-0 ">
-              <form onSubmit={handleSubmit} action="" className=" w-full  ">
-                <div className=" mb-5">
-                  <h1 className=" text-white text-4xl uppercase font-black">
+            <div className=" flex w-full px-5 top-1/2 -translate-y-1/3 md:-translate-y-[20%] lg:-translate-y-[40%] lg:mt-20 h-full lg:ps-16 absolute left-0 ">
+              <form onSubmit={handleSubmit} action="" className=" w-full   ">
+                <div className=" mb-5 flex flex-col items-center lg:items-start">
+                  <h1 className=" text-white text-3xl lg:text-4xl uppercase font-black">
                     {variant === "login" ? " log in" : "Forgot Password ?"}
                   </h1>
                   <p className=" text-white p-0 text-xs">
@@ -135,7 +135,7 @@ const Login: React.FC<{}> = (props: any) => {
                       : "Please enter the email or phone number you use to sign in Kinect Portal"}
                   </p>
                 </div>
-                <div className=" mt-8 flex flex-col max-w-[390px] mb-5">
+                <div className=" mt-8 flex flex-col lg:max-w-[390px] mb-5">
                   <label className=" text-white" htmlFor="">
                     Email Or Phone Number
                   </label>
@@ -159,7 +159,7 @@ const Login: React.FC<{}> = (props: any) => {
                 <div
                   className={
                     variant === "login"
-                      ? "flex flex-col relative w-[390px] mb-5"
+                      ? "flex flex-col relative w-full lg:max-w-[390px] mb-5"
                       : "hidden"
                   }
                 >
@@ -199,7 +199,7 @@ const Login: React.FC<{}> = (props: any) => {
                     variant === "login" ? handleSubmit : handleForgotPassword
                   }
                   type="submit"
-                  className=" main-button w-[390px] text-2xl font-black mb-5"
+                  className=" main-button w-full lg:max-w-[390px] text-2xl font-black mb-5"
                 >
                   {variant === "login" ? "START" : "NEXT"}
                 </button>

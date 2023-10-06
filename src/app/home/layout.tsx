@@ -23,15 +23,11 @@ export default async function HomeLayout({
     redirect("/login");
   }
   return (
-    // <html lang="en" className=" font-primary">
-    //   <body className={inter.className}>
     <>
       <div>
         <Navbar />
       </div>
       {children}
     </>
-    //   </body>
-    // </html>
   );
 }

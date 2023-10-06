@@ -25,7 +25,7 @@ const SearchInput: FC<SearchInputProps> = ({ searchText, setSearchText }) => {
       {showSearchInput && (
         <input
           type="search"
-          className=" w-96  py-2 ps-3 pe-8 rounded-3xl bg-transparent border-none "
+          className=" w-72 md:w-80 lg:w-96  py-2 ps-3 pe-8 rounded-3xl bg-transparent border-none "
           value={searchText}
           onChange={handleChange}
           placeholder="Search"

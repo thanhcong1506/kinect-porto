@@ -46,7 +46,7 @@ const Navbar = () => {
         showMenu ? "bg-[#14191D] " : " bg-[rgba(0,0,0,0.2)] "
       }`}
     >
-      <div className=" container mx-auto px-10 flex justify-between items-center h-20 w-full ">
+      <div className="  mx-auto lg:px-10 px-5 flex justify-between items-center h-20 w-full ">
         <div className=" flex gap-5">
           <p onClick={() => setShowMenu(!showMenu)}>
             {!showMenu ? (
@@ -63,10 +63,10 @@ const Navbar = () => {
             <img className=" cursor-pointer" src="/banner-icon.png" alt="" />
           </Link>
         </div>
-        <div className="flex justify-end items-center gap-7">
+        <div className=" flex justify-end items-center gap-7">
           <Search />
 
-          <div className=" flex gap-2 items-center relative">
+          <div className="hidden lg:flex gap-2 items-center relative">
             {session?.user && <p>{session.user.email}</p>}
             <div className=" hover:flex flex-col group">
               <img
@@ -99,8 +99,10 @@ const Navbar = () => {
 
       <div
         ref={menuRef}
-        className={`absolute w-1/5 bg-[#14191D]  z-10 transition-all duration-500 pt-3  ease-in  ${
-          showMenu ? "top-20 min-h-screen left-0 " : "-left-80 min-h-screen "
+        className={`absolute w-3/4 md:w-1/3 lg:w-1/5 bg-[#14191D]  z-10 transition-all duration-500 pt-3  ease-in  ${
+          showMenu
+            ? "top-20 min-h-screen left-0 "
+            : " -left-96 md:-left-80 min-h-screen "
         }`}
       >
         <div className="px-8">
