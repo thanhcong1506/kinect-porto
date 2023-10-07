@@ -19,7 +19,6 @@ export const useApi = (token: string | undefined) => {
 
 export const useGetApiHeader = async () => {
   const session = await getSession();
-  console.log(session?.user);
   const apiToken = useApi(session?.user.access_token);
   return apiToken;
 };

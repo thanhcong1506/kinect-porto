@@ -38,10 +38,10 @@ const Home = () => {
       <div className=" pt-2 ">
         <Featured />
       </div>
-      <div className=" px-8">
+      <div className=" lg:px-8">
         <div className="my-8 ">
-          <div className="mt-4 ps-10">
-            <div className=" flex items-center pb-2">
+          <div className="mt-4  lg:ps-10">
+            <div className=" flex items-center w-full justify-center lg:justify-start pb-2">
               <p className=" text-3xl font-bold text-white">NEW GAMES</p>
               <span className=" ms-3 px-2 py-1 text-sm rounded-full bg-[#FB04FF]">
                 hot
