@@ -9,6 +9,95 @@ interface category {
   name: string;
 }
 
+// type newGames={
+//   image_url: string;
+//     download_url: string;
+//     isLoved: boolean;
+//     id: number;
+//     code: string;
+//     name: string;
+//     image_url_filesize: number;
+//     image_url_extension: string;
+//     image_url_id: string;
+//     image_url_height: number;
+//     image_url_width: number,
+//     file_game_filename: string,
+//     file_game_filesize: 139932549,
+//     description:
+//     string
+//     trial_day: number,
+//     is_deleted: boolean,
+//     created_at: string,
+//     updated_at: string,
+//     deleted_at: null,
+//     genres: [
+//       {
+//         icon: string,
+//         id: 1,
+//         name:string,
+//         icon_filesize: number,
+//         icon_extension: string,
+//         icon_id: string,
+//         icon_height: number,
+//         icon_width: number,
+//         is_deleted: boolean,
+//         created_at: string,
+//         updated_at: string,
+//         deleted_at: null,
+//         GameGenre: {
+//           id: number,
+//           genre_id: number,
+//           game_id: number,
+//           created_at: string,
+//           updated_at: string,
+//         }
+//       }
+// }
+
+type newGamesss = {
+  image_url: string;
+  download_url: string;
+  isLoved: boolean;
+  id: number;
+  code: string;
+  name: string;
+  image_url_filesize: number;
+  image_url_extension: string;
+  image_url_id: string;
+  image_url_height: number;
+  image_url_width: number;
+  file_game_filename: string;
+  file_game_filesize: number;
+  description: string;
+  trial_day: number;
+  is_deleted: boolean;
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+  genres: [
+    {
+      icon: string;
+      id: number;
+      name: string;
+      icon_filesize: number;
+      icon_extension: string;
+      icon_id: string;
+      icon_height: number;
+      icon_width: number;
+      is_deleted: false;
+      created_at: string;
+      updated_at: string;
+      deleted_at: string | null;
+      GameGenre: {
+        id: number;
+        genre_id: number;
+        game_id: number;
+        created_at: string;
+        updated_at: string;
+      };
+    }
+  ];
+};
 export const genres = [
   {
     icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
@@ -191,5 +280,635 @@ export const genres = [
     created_at: "2023-06-28T06:54:04.000Z",
     updated_at: "2023-06-28T06:54:04.000Z",
     deleted_at: null,
+  },
+];
+export const newGames = [
+  {
+    image_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/79124869-cf83-4bad-9c64-5e7836691485.png",
+    download_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/temple-run1-1-WE6Zvu3S7BXjDhcLWyBi.zip",
+    isLoved: false,
+    id: 23,
+    code: "TempleRun",
+    name: "Temple Run",
+    image_url_filesize: 541751,
+    image_url_extension: "png",
+    image_url_id: "79124869-cf83-4bad-9c64-5e7836691485",
+    image_url_height: 512,
+    image_url_width: 512,
+    file_game_filename: "temple-run1-1-WE6Zvu3S7BXjDhcLWyBi.zip",
+    file_game_filesize: 139932549,
+    description:
+      "Temple Run 2, developed by Imangi, is an infinite runner where the player must escape from his enemy and avoid all the obstacles and traps that are found along the way. Traverse cliffs, forests and even mines, and help this fearless treasure fegfiuet54ytgh5i5pyh5pohgj5tgp9ytuighhtgoi5ty5oigh5thg5tigy5ig5h5t6h56h",
+    trial_day: 0,
+    is_deleted: false,
+    created_at: "2023-06-15T02:51:03.000Z",
+    updated_at: "2023-07-05T04:55:44.000Z",
+    deleted_at: null,
+    genres: [
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
+        id: 1,
+        name: "IO Games",
+        icon_filesize: 28994,
+        icon_extension: "png",
+        icon_id: "320a70fd-7dfb-41de-931d-798080258b2f",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:54:53.000Z",
+        updated_at: "2023-06-23T05:05:22.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 118,
+          genre_id: 1,
+          game_id: 23,
+          created_at: "2023-07-20T03:50:45.000Z",
+          updated_at: "2023-07-20T03:50:45.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/ad418f0d-7b9d-4570-88fb-e245622c8aa0.png",
+        id: 5,
+        name: "Action Games",
+        icon_filesize: 31550,
+        icon_extension: "png",
+        icon_id: "ad418f0d-7b9d-4570-88fb-e245622c8aa0",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:56:08.000Z",
+        updated_at: "2023-06-23T04:49:33.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 120,
+          genre_id: 5,
+          game_id: 23,
+          created_at: "2023-07-20T07:26:01.000Z",
+          updated_at: "2023-07-20T07:26:01.000Z",
+        },
+      },
+    ],
+  },
+  {
+    image_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/76c413c2-4b71-4ee1-91a0-dd731af6363b.jpg",
+    download_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/fruit1-1-RgAqiS93VhyUECxpldvy.zip",
+    isLoved: false,
+    id: 22,
+    code: "FruitCutter",
+    name: "Fruit Cutter",
+    image_url_filesize: 113571,
+    image_url_extension: "jpg",
+    image_url_id: "76c413c2-4b71-4ee1-91a0-dd731af6363b",
+    image_url_height: 512,
+    image_url_width: 512,
+    file_game_filename: "fruit1-1-RgAqiS93VhyUECxpldvy.zip",
+    file_game_filesize: 44640664,
+    description:
+      "Fruit Cutter the player slashes the fruits with a blade controlled via the touch screen. When the fruit is tossed, the player slides his finger across the screen to create a slash to split them in half.",
+    trial_day: 0,
+    is_deleted: false,
+    created_at: "2023-06-15T02:47:33.000Z",
+    updated_at: "2023-07-05T04:10:32.000Z",
+    deleted_at: null,
+    genres: [
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
+        id: 1,
+        name: "IO Games",
+        icon_filesize: 28994,
+        icon_extension: "png",
+        icon_id: "320a70fd-7dfb-41de-931d-798080258b2f",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:54:53.000Z",
+        updated_at: "2023-06-23T05:05:22.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 117,
+          genre_id: 1,
+          game_id: 22,
+          created_at: "2023-07-20T03:23:26.000Z",
+          updated_at: "2023-07-20T03:23:26.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/ad418f0d-7b9d-4570-88fb-e245622c8aa0.png",
+        id: 5,
+        name: "Action Games",
+        icon_filesize: 31550,
+        icon_extension: "png",
+        icon_id: "ad418f0d-7b9d-4570-88fb-e245622c8aa0",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:56:08.000Z",
+        updated_at: "2023-06-23T04:49:33.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 119,
+          genre_id: 5,
+          game_id: 22,
+          created_at: "2023-07-20T07:25:56.000Z",
+          updated_at: "2023-07-20T07:25:56.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/7530f187-0638-44b3-b73c-2c5e43faa313.png",
+        id: 6,
+        name: "Sport Games",
+        icon_filesize: 41402,
+        icon_extension: "png",
+        icon_id: "7530f187-0638-44b3-b73c-2c5e43faa313",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-06-05T03:33:50.000Z",
+        updated_at: "2023-06-23T04:53:39.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 129,
+          genre_id: 6,
+          game_id: 22,
+          created_at: "2023-07-21T09:17:07.000Z",
+          updated_at: "2023-07-21T09:17:07.000Z",
+        },
+      },
+    ],
+  },
+  {
+    image_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/79124869-cf83-4bad-9c64-5e7836691485.png",
+    download_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/temple-run1-1-WE6Zvu3S7BXjDhcLWyBi.zip",
+    isLoved: false,
+    id: 23,
+    code: "TempleRun",
+    name: "Temple Run",
+    image_url_filesize: 541751,
+    image_url_extension: "png",
+    image_url_id: "79124869-cf83-4bad-9c64-5e7836691485",
+    image_url_height: 512,
+    image_url_width: 512,
+    file_game_filename: "temple-run1-1-WE6Zvu3S7BXjDhcLWyBi.zip",
+    file_game_filesize: 139932549,
+    description:
+      "Temple Run 2, developed by Imangi, is an infinite runner where the player must escape from his enemy and avoid all the obstacles and traps that are found along the way. Traverse cliffs, forests and even mines, and help this fearless treasure fegfiuet54ytgh5i5pyh5pohgj5tgp9ytuighhtgoi5ty5oigh5thg5tigy5ig5h5t6h56h",
+    trial_day: 0,
+    is_deleted: false,
+    created_at: "2023-06-15T02:51:03.000Z",
+    updated_at: "2023-07-05T04:55:44.000Z",
+    deleted_at: null,
+    genres: [
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
+        id: 1,
+        name: "IO Games",
+        icon_filesize: 28994,
+        icon_extension: "png",
+        icon_id: "320a70fd-7dfb-41de-931d-798080258b2f",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:54:53.000Z",
+        updated_at: "2023-06-23T05:05:22.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 118,
+          genre_id: 1,
+          game_id: 23,
+          created_at: "2023-07-20T03:50:45.000Z",
+          updated_at: "2023-07-20T03:50:45.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/ad418f0d-7b9d-4570-88fb-e245622c8aa0.png",
+        id: 5,
+        name: "Action Games",
+        icon_filesize: 31550,
+        icon_extension: "png",
+        icon_id: "ad418f0d-7b9d-4570-88fb-e245622c8aa0",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:56:08.000Z",
+        updated_at: "2023-06-23T04:49:33.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 120,
+          genre_id: 5,
+          game_id: 23,
+          created_at: "2023-07-20T07:26:01.000Z",
+          updated_at: "2023-07-20T07:26:01.000Z",
+        },
+      },
+    ],
+  },
+  {
+    image_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/76c413c2-4b71-4ee1-91a0-dd731af6363b.jpg",
+    download_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/fruit1-1-RgAqiS93VhyUECxpldvy.zip",
+    isLoved: false,
+    id: 22,
+    code: "FruitCutter",
+    name: "Fruit Cutter",
+    image_url_filesize: 113571,
+    image_url_extension: "jpg",
+    image_url_id: "76c413c2-4b71-4ee1-91a0-dd731af6363b",
+    image_url_height: 512,
+    image_url_width: 512,
+    file_game_filename: "fruit1-1-RgAqiS93VhyUECxpldvy.zip",
+    file_game_filesize: 44640664,
+    description:
+      "Fruit Cutter the player slashes the fruits with a blade controlled via the touch screen. When the fruit is tossed, the player slides his finger across the screen to create a slash to split them in half.",
+    trial_day: 0,
+    is_deleted: false,
+    created_at: "2023-06-15T02:47:33.000Z",
+    updated_at: "2023-07-05T04:10:32.000Z",
+    deleted_at: null,
+    genres: [
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
+        id: 1,
+        name: "IO Games",
+        icon_filesize: 28994,
+        icon_extension: "png",
+        icon_id: "320a70fd-7dfb-41de-931d-798080258b2f",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:54:53.000Z",
+        updated_at: "2023-06-23T05:05:22.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 117,
+          genre_id: 1,
+          game_id: 22,
+          created_at: "2023-07-20T03:23:26.000Z",
+          updated_at: "2023-07-20T03:23:26.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/ad418f0d-7b9d-4570-88fb-e245622c8aa0.png",
+        id: 5,
+        name: "Action Games",
+        icon_filesize: 31550,
+        icon_extension: "png",
+        icon_id: "ad418f0d-7b9d-4570-88fb-e245622c8aa0",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:56:08.000Z",
+        updated_at: "2023-06-23T04:49:33.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 119,
+          genre_id: 5,
+          game_id: 22,
+          created_at: "2023-07-20T07:25:56.000Z",
+          updated_at: "2023-07-20T07:25:56.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/7530f187-0638-44b3-b73c-2c5e43faa313.png",
+        id: 6,
+        name: "Sport Games",
+        icon_filesize: 41402,
+        icon_extension: "png",
+        icon_id: "7530f187-0638-44b3-b73c-2c5e43faa313",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-06-05T03:33:50.000Z",
+        updated_at: "2023-06-23T04:53:39.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 129,
+          genre_id: 6,
+          game_id: 22,
+          created_at: "2023-07-21T09:17:07.000Z",
+          updated_at: "2023-07-21T09:17:07.000Z",
+        },
+      },
+    ],
+  },
+  {
+    image_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/79124869-cf83-4bad-9c64-5e7836691485.png",
+    download_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/temple-run1-1-WE6Zvu3S7BXjDhcLWyBi.zip",
+    isLoved: false,
+    id: 23,
+    code: "TempleRun",
+    name: "Temple Run",
+    image_url_filesize: 541751,
+    image_url_extension: "png",
+    image_url_id: "79124869-cf83-4bad-9c64-5e7836691485",
+    image_url_height: 512,
+    image_url_width: 512,
+    file_game_filename: "temple-run1-1-WE6Zvu3S7BXjDhcLWyBi.zip",
+    file_game_filesize: 139932549,
+    description:
+      "Temple Run 2, developed by Imangi, is an infinite runner where the player must escape from his enemy and avoid all the obstacles and traps that are found along the way. Traverse cliffs, forests and even mines, and help this fearless treasure fegfiuet54ytgh5i5pyh5pohgj5tgp9ytuighhtgoi5ty5oigh5thg5tigy5ig5h5t6h56h",
+    trial_day: 0,
+    is_deleted: false,
+    created_at: "2023-06-15T02:51:03.000Z",
+    updated_at: "2023-07-05T04:55:44.000Z",
+    deleted_at: null,
+    genres: [
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
+        id: 1,
+        name: "IO Games",
+        icon_filesize: 28994,
+        icon_extension: "png",
+        icon_id: "320a70fd-7dfb-41de-931d-798080258b2f",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:54:53.000Z",
+        updated_at: "2023-06-23T05:05:22.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 118,
+          genre_id: 1,
+          game_id: 23,
+          created_at: "2023-07-20T03:50:45.000Z",
+          updated_at: "2023-07-20T03:50:45.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/ad418f0d-7b9d-4570-88fb-e245622c8aa0.png",
+        id: 5,
+        name: "Action Games",
+        icon_filesize: 31550,
+        icon_extension: "png",
+        icon_id: "ad418f0d-7b9d-4570-88fb-e245622c8aa0",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:56:08.000Z",
+        updated_at: "2023-06-23T04:49:33.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 120,
+          genre_id: 5,
+          game_id: 23,
+          created_at: "2023-07-20T07:26:01.000Z",
+          updated_at: "2023-07-20T07:26:01.000Z",
+        },
+      },
+    ],
+  },
+  {
+    image_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/76c413c2-4b71-4ee1-91a0-dd731af6363b.jpg",
+    download_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/fruit1-1-RgAqiS93VhyUECxpldvy.zip",
+    isLoved: false,
+    id: 22,
+    code: "FruitCutter",
+    name: "Fruit Cutter",
+    image_url_filesize: 113571,
+    image_url_extension: "jpg",
+    image_url_id: "76c413c2-4b71-4ee1-91a0-dd731af6363b",
+    image_url_height: 512,
+    image_url_width: 512,
+    file_game_filename: "fruit1-1-RgAqiS93VhyUECxpldvy.zip",
+    file_game_filesize: 44640664,
+    description:
+      "Fruit Cutter the player slashes the fruits with a blade controlled via the touch screen. When the fruit is tossed, the player slides his finger across the screen to create a slash to split them in half.",
+    trial_day: 0,
+    is_deleted: false,
+    created_at: "2023-06-15T02:47:33.000Z",
+    updated_at: "2023-07-05T04:10:32.000Z",
+    deleted_at: null,
+    genres: [
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
+        id: 1,
+        name: "IO Games",
+        icon_filesize: 28994,
+        icon_extension: "png",
+        icon_id: "320a70fd-7dfb-41de-931d-798080258b2f",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:54:53.000Z",
+        updated_at: "2023-06-23T05:05:22.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 117,
+          genre_id: 1,
+          game_id: 22,
+          created_at: "2023-07-20T03:23:26.000Z",
+          updated_at: "2023-07-20T03:23:26.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/ad418f0d-7b9d-4570-88fb-e245622c8aa0.png",
+        id: 5,
+        name: "Action Games",
+        icon_filesize: 31550,
+        icon_extension: "png",
+        icon_id: "ad418f0d-7b9d-4570-88fb-e245622c8aa0",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:56:08.000Z",
+        updated_at: "2023-06-23T04:49:33.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 119,
+          genre_id: 5,
+          game_id: 22,
+          created_at: "2023-07-20T07:25:56.000Z",
+          updated_at: "2023-07-20T07:25:56.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/7530f187-0638-44b3-b73c-2c5e43faa313.png",
+        id: 6,
+        name: "Sport Games",
+        icon_filesize: 41402,
+        icon_extension: "png",
+        icon_id: "7530f187-0638-44b3-b73c-2c5e43faa313",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-06-05T03:33:50.000Z",
+        updated_at: "2023-06-23T04:53:39.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 129,
+          genre_id: 6,
+          game_id: 22,
+          created_at: "2023-07-21T09:17:07.000Z",
+          updated_at: "2023-07-21T09:17:07.000Z",
+        },
+      },
+    ],
+  },
+  {
+    image_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/79124869-cf83-4bad-9c64-5e7836691485.png",
+    download_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/temple-run1-1-WE6Zvu3S7BXjDhcLWyBi.zip",
+    isLoved: false,
+    id: 23,
+    code: "TempleRun",
+    name: "Temple Run",
+    image_url_filesize: 541751,
+    image_url_extension: "png",
+    image_url_id: "79124869-cf83-4bad-9c64-5e7836691485",
+    image_url_height: 512,
+    image_url_width: 512,
+    file_game_filename: "temple-run1-1-WE6Zvu3S7BXjDhcLWyBi.zip",
+    file_game_filesize: 139932549,
+    description:
+      "Temple Run 2, developed by Imangi, is an infinite runner where the player must escape from his enemy and avoid all the obstacles and traps that are found along the way. Traverse cliffs, forests and even mines, and help this fearless treasure fegfiuet54ytgh5i5pyh5pohgj5tgp9ytuighhtgoi5ty5oigh5thg5tigy5ig5h5t6h56h",
+    trial_day: 0,
+    is_deleted: false,
+    created_at: "2023-06-15T02:51:03.000Z",
+    updated_at: "2023-07-05T04:55:44.000Z",
+    deleted_at: null,
+    genres: [
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
+        id: 1,
+        name: "IO Games",
+        icon_filesize: 28994,
+        icon_extension: "png",
+        icon_id: "320a70fd-7dfb-41de-931d-798080258b2f",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:54:53.000Z",
+        updated_at: "2023-06-23T05:05:22.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 118,
+          genre_id: 1,
+          game_id: 23,
+          created_at: "2023-07-20T03:50:45.000Z",
+          updated_at: "2023-07-20T03:50:45.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/ad418f0d-7b9d-4570-88fb-e245622c8aa0.png",
+        id: 5,
+        name: "Action Games",
+        icon_filesize: 31550,
+        icon_extension: "png",
+        icon_id: "ad418f0d-7b9d-4570-88fb-e245622c8aa0",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:56:08.000Z",
+        updated_at: "2023-06-23T04:49:33.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 120,
+          genre_id: 5,
+          game_id: 23,
+          created_at: "2023-07-20T07:26:01.000Z",
+          updated_at: "2023-07-20T07:26:01.000Z",
+        },
+      },
+    ],
+  },
+  {
+    image_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/76c413c2-4b71-4ee1-91a0-dd731af6363b.jpg",
+    download_url:
+      "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/fruit1-1-RgAqiS93VhyUECxpldvy.zip",
+    isLoved: false,
+    id: 22,
+    code: "FruitCutter",
+    name: "Fruit Cutter",
+    image_url_filesize: 113571,
+    image_url_extension: "jpg",
+    image_url_id: "76c413c2-4b71-4ee1-91a0-dd731af6363b",
+    image_url_height: 512,
+    image_url_width: 512,
+    file_game_filename: "fruit1-1-RgAqiS93VhyUECxpldvy.zip",
+    file_game_filesize: 44640664,
+    description:
+      "Fruit Cutter the player slashes the fruits with a blade controlled via the touch screen. When the fruit is tossed, the player slides his finger across the screen to create a slash to split them in half.",
+    trial_day: 0,
+    is_deleted: false,
+    created_at: "2023-06-15T02:47:33.000Z",
+    updated_at: "2023-07-05T04:10:32.000Z",
+    deleted_at: null,
+    genres: [
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/320a70fd-7dfb-41de-931d-798080258b2f.png",
+        id: 1,
+        name: "IO Games",
+        icon_filesize: 28994,
+        icon_extension: "png",
+        icon_id: "320a70fd-7dfb-41de-931d-798080258b2f",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:54:53.000Z",
+        updated_at: "2023-06-23T05:05:22.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 117,
+          genre_id: 1,
+          game_id: 22,
+          created_at: "2023-07-20T03:23:26.000Z",
+          updated_at: "2023-07-20T03:23:26.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/ad418f0d-7b9d-4570-88fb-e245622c8aa0.png",
+        id: 5,
+        name: "Action Games",
+        icon_filesize: 31550,
+        icon_extension: "png",
+        icon_id: "ad418f0d-7b9d-4570-88fb-e245622c8aa0",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-05-30T08:56:08.000Z",
+        updated_at: "2023-06-23T04:49:33.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 119,
+          genre_id: 5,
+          game_id: 22,
+          created_at: "2023-07-20T07:25:56.000Z",
+          updated_at: "2023-07-20T07:25:56.000Z",
+        },
+      },
+      {
+        icon: "https://sti-game-asset.s3.ap-southeast-1.amazonaws.com/7530f187-0638-44b3-b73c-2c5e43faa313.png",
+        id: 6,
+        name: "Sport Games",
+        icon_filesize: 41402,
+        icon_extension: "png",
+        icon_id: "7530f187-0638-44b3-b73c-2c5e43faa313",
+        icon_height: 512,
+        icon_width: 512,
+        is_deleted: false,
+        created_at: "2023-06-05T03:33:50.000Z",
+        updated_at: "2023-06-23T04:53:39.000Z",
+        deleted_at: null,
+        GameGenre: {
+          id: 129,
+          genre_id: 6,
+          game_id: 22,
+          created_at: "2023-07-21T09:17:07.000Z",
+          updated_at: "2023-07-21T09:17:07.000Z",
+        },
+      },
+    ],
   },
 ];

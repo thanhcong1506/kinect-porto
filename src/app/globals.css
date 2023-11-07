@@ -42,4 +42,49 @@ body,
   .bg-transparent-to-bottom {
     @apply bg-gradient-to-b from-transparent to-[rgba(0,0,0,1)];
   }
+  .bg-transparent-to-bottom {
+    @apply bg-gradient-to-b from-transparent to-[rgba(0,0,0,1)];
+  }
+  .contaiter-slick .slick-track {
+    @apply mx-0;
+  }
+}
+
+.slick-slide > div {
+  margin: 0 10px;
+}
+.contaiter-slick .slick-list {
+  margin: 0 -10px;
+}
+.slick-slider .slick-prev,
+.slick-slider .slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  transform: translate(0, -50%);
+  cursor: pointer;
+  color: transparent;
+  border: none;
+  outline: none;
+  background: transparent;
+  z-index: 20;
+}
+.slick-slider .slick-next {
+  right: -5px;
+}
+.slick-slider .slick-prev {
+  left: -5px;
+}
+.slick-slider .slick-next:before {
+  content: "→";
+  font-size: 40px;
+}
+.slick-slider .slick-prev:before {
+  content: "←";
+  font-size: 40px;
 }

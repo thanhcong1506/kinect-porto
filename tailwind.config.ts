@@ -23,12 +23,6 @@ const config: Config = {
     fontFamily: {
       primary: ["Roboto", "sans-serif"],
     },
-
-    // transitionProperty: {
-    //   height: "height",
-    //   spacing: "margin, padding",
-    //   width: "width",
-    // },
   },
   plugins: [require("tailwind-scrollbar-hide")],
 };

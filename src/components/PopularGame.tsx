@@ -50,7 +50,7 @@ const PopularGame = ({
   return (
     <div className="relative">
       <div
-        className=" flex w-max h-full  transition-all ease-in-out duration-700"
+        className=" grid grid-cols-1 md:grid-cols-2  transition-all ease-in-out duration-700"
         ref={listRef}
       >
         {status === "loading" && !isHandlingToggle ? (
@@ -60,7 +60,7 @@ const PopularGame = ({
             {popularGames.map((popularGame) => (
               <div
                 key={popularGame.id}
-                className="  w-[312px] h-[348px] hover:min-w-[624px] hover:bg-black hover:shadow-md hover:rounded-md ease-in-out duration-1000 transition-width mx-0 hover:mx-3"
+                className="  hover:bg-black hover:shadow-md hover:rounded-md ease-in-out duration-1000 transition-width mx-0 hover:mx-3"
               >
                 <div className="flex group gap-5 w-full h-full ">
                   <Image
@@ -70,7 +70,7 @@ const PopularGame = ({
                     width={312}
                     height={348}
                   />
-                  <div className="hidden w-[300px] group-hover:flex items-center justify-center">
+                  <div className="hidden group-hover:flex items-center justify-center group-hover:w-full">
                     <div className=" flex flex-col gap-3 text-white w-full pe-3">
                       <div className=" flex gap-1  ">
                         {popularGame.genres?.map((genre) => (
@@ -117,29 +117,28 @@ const PopularGame = ({
                 </div>
               </div>
             ))}
+            <FiChevronLeft
+              onClick={() => handleClick("left")}
+              className={
+                slideNumber === 0
+                  ? "hidden"
+                  : " absolute cursor-pointer opacity-50 hover:opacity-100 left-0 top-[50%] translate-y-[-50%] hover:scale-150 ease-in-out duration-300 h-full"
+              }
+              size={30}
+            />
+
+            <FiChevronRight
+              onClick={() => handleClick("right")}
+              className={
+                slideNumber < 4
+                  ? "hidden"
+                  : " absolute cursor-pointer opacity-50 hover:opacity-100 right-0 top-[50%] translate-y-[-50%] hover:scale-150 ease-in-out duration-300 h-full"
+              }
+              size={30}
+            />
           </>
         )}
       </div>
-
-      <FiChevronLeft
-        onClick={() => handleClick("left")}
-        className={
-          slideNumber === 0
-            ? "hidden"
-            : " absolute cursor-pointer opacity-50 hover:opacity-100 left-0 top-[50%] translate-y-[-50%] hover:scale-150 ease-in-out duration-300 h-full"
-        }
-        size={30}
-      />
-
-      <FiChevronRight
-        onClick={() => handleClick("right")}
-        className={
-          slideNumber === 4
-            ? "hidden"
-            : " absolute cursor-pointer opacity-50 hover:opacity-100 right-0 top-[50%] translate-y-[-50%] hover:scale-150 ease-in-out duration-300 h-full"
-        }
-        size={30}
-      />
     </div>
   );
 };

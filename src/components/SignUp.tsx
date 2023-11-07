@@ -7,6 +7,7 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import axios from "axios";
 import useInput from "@/hook/useInput";
 import { toast } from "react-toastify";
+import { signIn } from "next-auth/react";
 
 const Signup: React.FC<{}> = (props: any) => {
   const [type, setType] = useState<string>("password");
@@ -102,6 +103,7 @@ const Signup: React.FC<{}> = (props: any) => {
                     Email Or Phone Number
                   </label>
                   <input
+                    placeholder="Email or mobile phone"
                     className="px-3 py-2 bg-[#344148] rounded-md text-white   "
                     onChange={emailChangeHandler}
                     onBlur={emailBlueHandler}
@@ -174,11 +176,11 @@ const Signup: React.FC<{}> = (props: any) => {
                     src="/flat-color-icons_google.png"
                     alt=""
                   />
-                  <button>GOOGLE</button>
+                  <button onClick={() => signIn("google")}>GOOGLE</button>
                 </div>
                 <div className=" flex gap-2 p-2 bg-[#143A4F] rounded-md items-center">
                   <img className=" w-5 h-5" src="/logos_facebook.png" alt="" />
-                  <button>FACEBOOK</button>
+                  <button onClick={() => signIn("facebook")}>FACEBOOK</button>
                 </div>
               </div>
               <p className="text-[#344148] text-sm mb-5">
